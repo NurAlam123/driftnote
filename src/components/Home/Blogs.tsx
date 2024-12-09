@@ -8,7 +8,7 @@ const Blogs = async () => {
   return (
     <section>
       <div>
-        <h1 className="font-bold text-2xl">All Blogs</h1>
+        <h1 className="font-bold text-2xl">All Blogs [{posts.length}]</h1>
       </div>
       <div className="mt-6 ms-6">
         <ul className="list-none space-y-4 [text-decoration-style:dotted]">

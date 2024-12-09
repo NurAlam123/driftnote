@@ -5,14 +5,17 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center mx-4 my-4 border-b [border-style:dotted] p-4">
       <div>
-        <h2 className="text-xl font-bold">Blog</h2>
+        <Link href="/" className="text-5xl font-bold">
+          Anolog
+        </Link>
       </div>
       <div>
-        <div className="bg-gray-900 rounded-full p-2">
-          <Link href="/blog/create">
-            <PlusIcon />
-          </Link>
-        </div>
+        <Link
+          className="border block bg-black hover:bg-white hover:text-black transition rounded-full p-2"
+          href="/blog/create"
+        >
+          <PlusIcon />
+        </Link>
       </div>
     </nav>
   );
