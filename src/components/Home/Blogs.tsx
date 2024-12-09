@@ -3,7 +3,11 @@ import { Stars } from "lucide-react";
 import Link from "next/link";
 
 const Blogs = async () => {
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <section>
