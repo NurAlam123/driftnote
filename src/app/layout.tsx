@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} font-roboto antialiased`}>
-        {children}
+        <main className="max-w-screen-xl mx-auto">{children}</main>
       </body>
     </html>
   );
