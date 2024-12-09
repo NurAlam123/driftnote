@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 export default function PostCreatePage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [submit, setSubmit] = useState(true);
+
+  const titleMinLimit = 5;
+  const contentMinLimit = 50;
 
   // for auto resizeable textarea
   useEffect(() => {
@@ -19,11 +23,35 @@ export default function PostCreatePage() {
     });
   });
 
+  const titleHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
+    const value = el.currentTarget.value;
+    setTitle(value);
+
+    if (
+      title.trim().length <= titleMinLimit ||
+      value.trim().length <= contentMinLimit
+    )
+      setSubmit(true);
+    else setSubmit(false);
+  };
+  const contentHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
+    const value = el.currentTarget.value;
+    setContent(value);
+
+    if (
+      title.trim().length <= titleMinLimit ||
+      value.trim().length <= contentMinLimit
+    )
+      setSubmit(true);
+    else setSubmit(false);
+  };
+
   return (
     <form action={handleForm} className="relative bg-background text-white">
       <button
         type="submit"
-        className="bg-blue-500 absolute top-0 right-0 px-6 py-2 m-4 rounded-full font-bold"
+        className="bg-blue-500 absolute top-0 right-0 px-6 py-2 m-4 rounded-full font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
+        disabled={submit}
       >
         Submit
       </button>
@@ -31,14 +59,14 @@ export default function PostCreatePage() {
         <textarea
           name="title"
           value={title}
-          onChange={(el) => setTitle(el.currentTarget.value)}
+          onChange={titleHandler}
           className="resize-none text-wrap w-full h-full bg-inherit text-inherit outline-none text-4xl ps-12 mt-20"
           placeholder="Title here..."
         />
         <textarea
           name="content"
           value={content}
-          onChange={(el) => setContent(el.currentTarget.value)}
+          onChange={contentHandler}
           className="w-full h-96 resize-none text-inherit outline-none bg-inherit text-lg ps-12"
           placeholder="Write your blog here..."
         />
