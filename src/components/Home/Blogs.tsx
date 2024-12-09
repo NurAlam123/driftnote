@@ -1,40 +1,10 @@
+import prisma from "@/lib/db";
 import { Stars } from "lucide-react";
 import Link from "next/link";
 
-const posts = [
-  {
-    title: "A tile",
-    id: 1,
-    author: "",
-  },
-  {
-    title: "A tile",
-    id: 2,
-    author: "",
-  },
-  {
-    title: "A tile",
-    id: 3,
-    author: "",
-  },
-  {
-    title: "A tile",
-    id: 4,
-    author: "",
-  },
-  {
-    title: "A tile",
-    id: 5,
-    author: "",
-  },
-  {
-    title: "A tile",
-    id: 6,
-    author: "",
-  },
-];
+const Blogs = async () => {
+  const posts = await prisma.post.findMany();
 
-const Blogs = () => {
   return (
     <section>
       <div>
@@ -42,10 +12,10 @@ const Blogs = () => {
       </div>
       <div className="mt-6 ms-6">
         <ul className="list-none space-y-4 [text-decoration-style:dotted]">
-          {posts.map((post, index) => (
-            <li key={index} className="list-item w-fit">
+          {posts.map((post) => (
+            <li key={post.title} className="list-item w-fit">
               <Link
-                href={`/blog/${post.id}`}
+                href={`/blog/${post.slug}`}
                 className="flex text-gray-400 items-center gap-2 *:underline *:underline-offset-4 *:[text-decoration-style:dotted]"
               >
                 <Stars />
