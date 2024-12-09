@@ -2,9 +2,9 @@ import prisma from "@/lib/db";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-type ParamsType = {
+type ParamsType = Promise<{
   slug: string;
-};
+}>;
 
 export default async function Page({ params }: { params: ParamsType }) {
   const { slug } = await params;
