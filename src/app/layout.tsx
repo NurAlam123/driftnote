@@ -3,8 +3,8 @@ import "./globals.css";
 import { roboto } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "A plain and clean blog website.",
+  title: "Anolog",
+  description: "A plain and clean anonymous blog website.",
 };
 
 export default function RootLayout({
