@@ -1,12 +1,11 @@
 import prisma from "@/lib/db";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import moment from "moment";
 
 type ParamsType = Promise<{
   slug: string;
 }>;
 
-export default async function Page({ params }: { params: ParamsType }) {
+export default async function BlogPage({ params }: { params: ParamsType }) {
   const { slug } = await params;
 
   const post = await prisma.post.findUnique({
@@ -16,16 +15,14 @@ export default async function Page({ params }: { params: ParamsType }) {
   });
 
   return (
-    <section className="p-12 space-y-6">
-      <Link
-        className="text-blue-400 flex items-center gap-1 font-semibold hover:text-blue-500 w-fit underline underline-offset-2"
-        href="/"
-      >
-        <ArrowLeft />
-        Home
-      </Link>
-      <h1 className="text-4xl font-bold">{post?.title}</h1>
-      <article>{post?.content}</article>
+    <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 space-y-4 md:space-y-6">
+      <div>
+        <h1 className="text-4xl md:text-5xl font-bold">{post?.title}</h1>
+        <p className="mt-4 ml-2 text-sm text-gray-500">
+          — {moment(post?.createdAt).toString()}
+        </p>
+      </div>
+      <article className="text-lg">{post?.content}</article>
     </section>
   );
 }

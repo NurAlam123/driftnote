@@ -17,7 +17,7 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} ${PTSerif.variable} ${playwrite.variable} font-roboto antialiased`}
       >
-        <main className="max-w-screen-xl mx-auto">{children}</main>
+        <main className="max-w-screen-md mx-auto">{children}</main>
       </body>
     </html>
   );

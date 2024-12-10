@@ -1,13 +1,9 @@
-import Blogs from "@/components/Home/Blogs";
-import Navbar from "@/components/Navbar";
+import Blogs from "@/components/Blogs";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <section className="mx-6 mt-12">
-        <Blogs />
-      </section>
-    </>
+    <section className="mx-4 md:mx-6 mt-6">
+      <Blogs />
+    </section>
   );
 }

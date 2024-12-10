@@ -28,7 +28,7 @@ export default function PostCreatePage() {
     setTitle(value);
 
     if (
-      title.trim().length <= titleMinLimit ||
+      content.trim().length <= titleMinLimit ||
       value.trim().length <= contentMinLimit
     )
       setSubmit(true);
@@ -47,10 +47,13 @@ export default function PostCreatePage() {
   };
 
   return (
-    <form action={handleForm} className="relative bg-background text-white">
+    <form
+      action={handleForm}
+      className="relative bg-background text-foreground"
+    >
       <button
         type="submit"
-        className="bg-blue-500 absolute top-0 right-0 px-6 py-2 m-4 rounded-full font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="bg-blue-500 text-white absolute top-0 right-0 px-6 py-2 m-4 rounded-full font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
         disabled={submit}
       >
         Submit
