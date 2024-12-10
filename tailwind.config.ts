@@ -10,6 +10,8 @@ export default {
     extend: {
       fontFamily: {
         roboto: ["var(--font-roboto)"],
+        playwrite: ["var(--font-playwrite)"],
+        "pt-serif": ["var(--font-pt-serif)"],
       },
       colors: {
         background: "var(--background)",

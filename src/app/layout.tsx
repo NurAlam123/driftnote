@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { roboto } from "./fonts";
+import { playwrite, PTSerif, roboto } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Anolog",
@@ -14,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} font-roboto antialiased`}>
+      <body
+        className={`${roboto.variable} ${PTSerif.variable} ${playwrite.variable} font-roboto antialiased`}
+      >
         <main className="max-w-screen-xl mx-auto">{children}</main>
       </body>
     </html>
