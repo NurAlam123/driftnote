@@ -9,8 +9,8 @@ export default function NotFound() {
         <Coffee className="size-32" />
       </div>
       <div>
-        <p className="text-xl text-gray-300">Nothing to read here.</p>
-        <p className="text-xl font-bold text-gray-300">
+        <p className="text-xl text-foreground">Nothing to read here.</p>
+        <p className="text-xl font-bold text-foreground">
           Go{" "}
           <Link href="/" className="text-blue-400 underline underline-offset-2">
             Home
