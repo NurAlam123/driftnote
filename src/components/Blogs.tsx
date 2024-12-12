@@ -1,25 +1,32 @@
-import prisma from "@/lib/db";
+"use client";
 import { NotebookText } from "lucide-react";
 import Link from "next/link";
 import moment from "moment";
+import useSWR from "swr";
+import { fetcher } from "@/lib/utils";
+import { Post } from "@prisma/client";
 
-const Blogs = async () => {
-  const posts = await prisma.post.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+const Blogs = () => {
+  const url = "/api/posts";
+
+  const { data, error, isLoading } = useSWR(url, fetcher, {
+    refreshInterval: 60 * 1000,
   });
+
+  if (error) return <div>Failed to load</div>;
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <section>
       <div>
         <h2 className="font-bold text-3xl">
-          All Blogs <span className="text-gray-400">[ {posts.length} ]</span>
+          All Blogs{" "}
+          <span className="text-neutral-500">[ {data.numberOfPosts} ]</span>
         </h2>
       </div>
       <div className="mt-6 ms-4">
         <ul className="list-none space-y-4 [text-decoration-style:dotted] md:text-xl">
-          {posts.map((post) => (
+          {data.posts.map((post: Post) => (
             <li key={post.slug} className="list-item w-fit">
               <div className="flex gap-2 items-center">
                 <Link
