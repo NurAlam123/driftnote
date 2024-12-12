@@ -1,5 +1,6 @@
 import prisma from "@/lib/db";
 import moment from "moment";
+import { notFound } from "next/navigation";
 
 type ParamsType = Promise<{
   slug: string;
@@ -13,6 +14,8 @@ export default async function BlogPage({ params }: { params: ParamsType }) {
       slug,
     },
   });
+
+  if (!post) notFound();
 
   return (
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 space-y-4 md:space-y-6">

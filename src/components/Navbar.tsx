@@ -23,7 +23,7 @@ const Navbar = () => {
         <div>
           <Link
             className="border-2 block bg-background hover:bg-white hover:text-black hover:border-gray-400 transition-colors rounded-full p-4"
-            href="/blog/create"
+            href="/blog/write"
           >
             <Pencil className="size-full" />
           </Link>
