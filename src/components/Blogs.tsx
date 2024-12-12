@@ -1,12 +1,15 @@
 "use client";
 import { NotebookText } from "lucide-react";
 import Link from "next/link";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { Post } from "@prisma/client";
 
 const Blogs = () => {
+  dayjs.extend(relativeTime);
+
   const url = "/api/posts";
 
   const { data, error, isLoading } = useSWR(url, fetcher, {
@@ -38,7 +41,7 @@ const Blogs = () => {
                 </Link>
                 <span className="text-neutral-500 text-sm">—</span>
                 <span className="text-neutral-500 text-sm">
-                  {moment(post.createdAt).fromNow()}
+                  {dayjs(post.createdAt).fromNow()}
                 </span>
               </div>
             </li>
