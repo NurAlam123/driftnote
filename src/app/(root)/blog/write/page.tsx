@@ -58,7 +58,7 @@ export default function PostCreatePage() {
       >
         Submit
       </button>
-      <div>
+      <div className="font-pt-serif">
         <textarea
           name="title"
           value={title}
