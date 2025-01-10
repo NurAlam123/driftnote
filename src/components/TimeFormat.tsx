@@ -12,7 +12,11 @@ const TimeFormat = ({ time, format }: { time: Date; format: string }) => {
   const localTime = dayjs(time).tz(userTimeZone);
   const formatTime = dayjs(localTime).format(format);
 
-  return <span suppressHydrationWarning>{formatTime}</span>;
+  return (
+    <time dateTime={localTime.toISOString()} suppressHydrationWarning>
+      {formatTime}
+    </time>
+  );
 };
 
 export default TimeFormat;
