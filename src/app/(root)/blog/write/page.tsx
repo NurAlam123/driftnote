@@ -1,53 +1,61 @@
 "use client";
 
-import { handleForm } from "@/actions/create";
-import { useEffect, useState } from "react";
+//import { handleForm } from "@/actions/create";
+//import TextEditor from "@/components/TextEditor";
+import dynamic from "next/dynamic";
+//import { useEffect, useState } from "react";
+
+const TextEditor = dynamic(() => import("@/components/TextEditor"), {
+  ssr: false,
+});
 
 export default function PostCreatePage() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [submit, setSubmit] = useState(true);
-
-  const titleMinLimit = 5;
-  const contentMinLimit = 50;
-
-  // for auto resizeable textarea
-  useEffect(() => {
-    document.querySelectorAll("textarea").forEach((textarea) => {
-      textarea.style.height = textarea.scrollHeight + "px";
-      textarea.style.overflowY = "hidden";
-
-      textarea.addEventListener("input", function () {
-        this.style.height = this.scrollHeight + "px";
-      });
-    });
-  });
-
-  const titleHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
-    const value = el.currentTarget.value;
-    setTitle(value);
-
-    if (
-      content.trim().length <= titleMinLimit ||
-      value.trim().length <= contentMinLimit
-    )
-      setSubmit(true);
-    else setSubmit(false);
-  };
-  const contentHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
-    const value = el.currentTarget.value;
-    setContent(value);
-
-    if (
-      title.trim().length <= titleMinLimit ||
-      value.trim().length <= contentMinLimit
-    )
-      setSubmit(true);
-    else setSubmit(false);
-  };
+  //const [title, setTitle] = useState("");
+  //const [content, setContent] = useState("");
+  //const [submit, setSubmit] = useState(true);
+  //
+  //const titleMinLimit = 5;
+  //const contentMinLimit = 50;
+  //
+  //// for auto resizeable textarea
+  //useEffect(() => {
+  //  document.querySelectorAll("textarea").forEach((textarea) => {
+  //    textarea.style.height = textarea.scrollHeight + "px";
+  //    textarea.style.overflowY = "hidden";
+  //
+  //    textarea.addEventListener("input", function () {
+  //      this.style.height = this.scrollHeight + "px";
+  //    });
+  //  });
+  //});
+  //
+  //const titleHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
+  //  const value = el.currentTarget.value;
+  //  setTitle(value);
+  //
+  //  if (
+  //    content.trim().length <= titleMinLimit ||
+  //    value.trim().length <= contentMinLimit
+  //  )
+  //    setSubmit(true);
+  //  else setSubmit(false);
+  //};
+  //const contentHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
+  //  const value = el.currentTarget.value;
+  //  setContent(value);
+  //
+  //  if (
+  //    title.trim().length <= titleMinLimit ||
+  //    value.trim().length <= contentMinLimit
+  //  )
+  //    setSubmit(true);
+  //  else setSubmit(false);
+  //};
 
   return (
-    <form
+    <>
+      <TextEditor />
+      {/*<form
       action={handleForm}
       className="relative bg-background text-foreground"
     >
@@ -75,5 +83,7 @@ export default function PostCreatePage() {
         />
       </div>
     </form>
+    */}
+    </>
   );
 }
