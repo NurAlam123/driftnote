@@ -16,7 +16,7 @@ const Navbar = () => {
           href="/"
           className="text-4xl md:text-5xl font-bold font-playwrite"
         >
-          Anolog
+          DriftNote
         </Link>
       </div>
       {isHomePage && (

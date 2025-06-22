@@ -3,8 +3,8 @@ import "./globals.css";
 import { playwrite, PTSerif, roboto } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "Anolog",
-  description: "A plain and clean anonymous blog website.",
+  title: "DriftNote",
+  description: "Share your thoughts freely and anonymously.",
 };
 
 export default function RootLayout({
