@@ -1,9 +1,9 @@
-import Blogs from "@/components/Blogs";
+import Notes from "@/components/Notes";
 
 export default function Home() {
   return (
     <section className="mx-4 md:mx-6 mt-6">
-      <Blogs />
+      <Notes />
     </section>
   );
 }

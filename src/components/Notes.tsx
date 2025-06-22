@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { Post } from "@prisma/client";
 
-const Blogs = () => {
+const Notes = () => {
   dayjs.extend(relativeTime);
 
   const url = "/api/posts";
@@ -23,7 +23,7 @@ const Blogs = () => {
     <section>
       <div>
         <h2 className="font-bold text-3xl">
-          All Blogs{" "}
+          All Notes{" "}
           <span className="text-neutral-500">[ {data.numberOfPosts} ]</span>
         </h2>
       </div>
@@ -33,7 +33,7 @@ const Blogs = () => {
             <li key={post.slug} className="list-item w-fit">
               <div className="flex gap-2 items-center">
                 <Link
-                  href={`/blog/${post.slug}`}
+                  href={`/note/${post.slug}`}
                   className="flex text-foreground items-center gap-2 *:underline *:underline-offset-4 *:[text-decoration-style:dashed]"
                 >
                   <NotebookText />
@@ -52,4 +52,4 @@ const Blogs = () => {
   );
 };
 
-export default Blogs;
+export default Notes;

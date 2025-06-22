@@ -16,3 +16,9 @@ export const checkAndGetTitle = (markdown: string) => {
 
   return lines[0].replace("#", "").trim();
 };
+
+export const getContent = (markdown: string) => {
+  const lines = markdown.split("\n");
+  const content = lines.slice(1);
+  return { lines, content };
+};

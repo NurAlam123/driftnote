@@ -1,4 +1,4 @@
-import { checkAndGetTitle } from "@/lib/utils";
+import { checkAndGetTitle, getContent } from "@/lib/utils";
 import { BlockNoteEditor } from "@blocknote/core";
 import { en } from "@blocknote/core/locales";
 import { BlockNoteView, lightDefaultTheme, Theme } from "@blocknote/mantine";
@@ -67,8 +67,7 @@ export default function App({
   };
 
   const checkContent = (markdown: string) => {
-    const lines = markdown.split("\n");
-    const content = lines.slice(1);
+    const { lines, content } = getContent(markdown);
     let result = "";
 
     for (let i = 0; i < content.length; i++) {

@@ -7,7 +7,7 @@ export default function NotFound() {
       <div>
         <div className=" text-center flex flex-col items-center space-y-4">
           <NotepadTextDashed className="size-64" />
-          <p className="font-bold text-2xl">No Blog Found</p>
+          <p className="font-bold text-2xl">No Note Found</p>
         </div>
         <div className="text-start mt-12 flex gap-2 items-center justify-center">
           <Link
@@ -19,9 +19,9 @@ export default function NotFound() {
           </Link>
           <Link
             className="font-bold flex bg-blue-400 text-background border border-background px-8 py-4 rounded-full relative hover:bg-background hover:border-blue-400 hover:text-blue-400 transition"
-            href={"/blog/write"}
+            href={"/note/write"}
           >
-            Write Blog
+            Write Note
             <ArrowUpRight className="absolute right-4 top-3 size-4" />
           </Link>
         </div>

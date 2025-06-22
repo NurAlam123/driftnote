@@ -1,6 +1,6 @@
 "use client";
 import { createPost } from "@/actions/create";
-import { checkAndGetTitle } from "@/lib/utils";
+import { checkAndGetTitle, getContent } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -14,9 +14,11 @@ export default function PostCreatePage() {
 
   const submitHandler = async () => {
     const title = checkAndGetTitle(markdown);
+    const { content } = getContent(markdown);
+
     if (!title) return;
 
-    await createPost(title, markdown);
+    await createPost(title, content.join("\n"));
   };
 
   return (

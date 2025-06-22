@@ -20,8 +20,8 @@ export const createPost = async (title: string, content: string) => {
     },
   });
 
-  revalidatePath(`/blog/${slug}`);
-  redirect(`/blog/${slug}`);
+  revalidatePath(`/note/${slug}`);
+  redirect(`/note/${slug}`);
 };
 
 export const generateUniqueSlug = async (title: string): Promise<string> => {

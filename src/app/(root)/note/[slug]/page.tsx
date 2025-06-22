@@ -1,4 +1,4 @@
-import BlogPost from "@/components/BlogPost";
+import Note from "@/components/Note";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 
@@ -6,7 +6,7 @@ type ParamsType = Promise<{
   slug: string;
 }>;
 
-export default async function BlogPage({ params }: { params: ParamsType }) {
+export default async function NotePage({ params }: { params: ParamsType }) {
   const { slug } = await params;
 
   const post = await prisma.post.findUnique({
@@ -21,7 +21,7 @@ export default async function BlogPage({ params }: { params: ParamsType }) {
 
   return (
     <>
-      <BlogPost createdAt={createdAt} title={title} content={content} />
+      <Note createdAt={createdAt} title={title} content={content} />
     </>
   );
 }

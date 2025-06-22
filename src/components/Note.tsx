@@ -1,23 +1,26 @@
 "use client";
+import Markdown from "react-markdown";
 import TimeFormat from "./TimeFormat";
 
-type BlogPostType = {
+type NotePostType = {
   title: string;
   content: string;
   createdAt: Date;
 };
 
-const BlogPost = ({ title, content, createdAt }: BlogPostType) => {
+const Note = ({ title, content, createdAt }: NotePostType) => {
   return (
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 mb-12">
       <div>
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold">{title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold capitalize">{title}</h1>
           <p className="mt-2 ml-2 mb-4 text-sm text-gray-500">
             — <TimeFormat time={createdAt} format="ddd, MMM DD YYYY • HH:mm" />
           </p>
         </div>
-        <article className="text-lg whitespace-pre-line">{content}</article>
+        <article className="prose">
+          <Markdown>{content}</Markdown>
+        </article>
       </div>
       <div className="relative mt-12 md:mt-24">
         <div className="absolute inset-0 border-t-4 [border-style:dotted]" />
@@ -29,4 +32,4 @@ const BlogPost = ({ title, content, createdAt }: BlogPostType) => {
   );
 };
 
-export default BlogPost;
+export default Note;
