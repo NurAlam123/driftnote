@@ -1,5 +1,6 @@
 "use client";
 import { createPost } from "@/actions/create";
+import { checkAndGetTitle } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -8,70 +9,29 @@ const TextEditor = dynamic(() => import("@/components/TextEditor"), {
 });
 
 export default function PostCreatePage() {
-  const [markdow, setMarkdown] = useState<string>("");
-
-  const badTitles = [
-    "",
-    "title",
-    "title here",
-    "title here!",
-    "insert title here",
-    "heading",
-    "heading 1",
-    "untitled",
-    "no title",
-    "markdown",
-    "document",
-    "page 1",
-    "page one",
-    "chapter 1",
-    "introduction",
-    "welcome",
-    "home",
-    "about",
-    "readme",
-    "index",
-    "start",
-    "sample title",
-    "test",
-    "example",
-    "demo",
-    "lorem ipsum",
-  ];
-
-  const checkAndGetTitle = () => {
-    const lines = markdow.split("\n").map((line) => line.trim());
-    const firstLine = lines[0].toLowerCase().trim();
-    if (
-      !firstLine.startsWith("#") ||
-      firstLine === "#" ||
-      badTitles.includes(firstLine.replace("#", "").trim())
-    ) {
-      return;
-    }
-
-    return lines[0].replace("#", "").trim();
-  };
+  const [markdown, setMarkdown] = useState<string>("");
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   const submitHandler = async () => {
-    const title = checkAndGetTitle();
+    const title = checkAndGetTitle(markdown);
     if (!title) return;
 
-    await createPost(title, markdow);
+    await createPost(title, markdown);
   };
 
   return (
     <div className="h-screen flex flex-col">
       <div className="flex justify-end my-2">
         <button
-          className="bg-blue-500 text-white font-semibold px-4 py-1 rounded-full"
+          className="bg-blue-500 text-white font-semibold px-4 py-1 rounded-full disabled:bg-zinc-100 disabled:border disabled:text-zinc-400 transition-colors duration-100 disabled:cursor-not-allowed"
           onClick={submitHandler}
+          disabled={disabled}
         >
           Submit
         </button>
       </div>
       <div className="border rounded-md flex-1 mb-4 h-full overflow-auto shadow-sm">
-        <TextEditor setMarkdown={setMarkdown} />
+        <TextEditor setMarkdown={setMarkdown} setDisabled={setDisabled} />
       </div>
     </div>
   );

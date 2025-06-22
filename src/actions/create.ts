@@ -1,11 +1,14 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { checkAndGetTitle } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import slugify from "react-slugify";
 
 export const createPost = async (title: string, content: string) => {
+  if (!checkAndGetTitle(title) && content.trim() === "") return;
+
   const slug = await generateUniqueSlug(title);
 
   // Add to database

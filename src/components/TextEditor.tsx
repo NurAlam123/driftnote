@@ -1,3 +1,6 @@
+import { checkAndGetTitle } from "@/lib/utils";
+import { BlockNoteEditor } from "@blocknote/core";
+import { en } from "@blocknote/core/locales";
 import { BlockNoteView, lightDefaultTheme, Theme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
@@ -5,15 +8,26 @@ import { useEffect } from "react";
 
 export default function App({
   setMarkdown,
+  setDisabled,
 }: {
   setMarkdown: React.Dispatch<React.SetStateAction<string>>;
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const editor = useCreateBlockNote({
+  const locale = en;
+  const editor: BlockNoteEditor = useCreateBlockNote({
+    dictionary: {
+      ...locale,
+      placeholders: {
+        ...locale.placeholders,
+        emptyDocument: "Write anything here or type '/' for commands...",
+        default: "Write anything here or type '/' for commands...",
+      },
+    },
     initialContent: [
       { type: "heading", content: "Title Here!" },
       {
         type: "paragraph",
-        content: "Write anything here or type '/' for commands...",
+        content: "",
       },
     ],
   });
@@ -52,9 +66,30 @@ export default function App({
     borderRadius: 6,
   };
 
+  const checkContent = (markdown: string) => {
+    const lines = markdown.split("\n");
+    const content = lines.slice(1);
+    let result = "";
+
+    for (let i = 0; i < content.length; i++) {
+      const line = content[i].trim();
+      if (line) result += line + " ";
+    }
+
+    const title = checkAndGetTitle(lines[0]);
+
+    if (result.trim() === "" || !title) {
+      setDisabled(true);
+      return;
+    }
+
+    setDisabled(false);
+  };
+
   const getMarkdown = async () => {
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
     setMarkdown(markdown);
+    checkContent(markdown);
   };
 
   useEffect(() => {
