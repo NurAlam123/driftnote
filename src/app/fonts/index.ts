@@ -63,6 +63,7 @@ export const roboto = localFont({
     },
   ],
   variable: "--font-roboto",
+  display: "swap",
 });
 
 export const playwrite = localFont({
@@ -72,6 +73,7 @@ export const playwrite = localFont({
     },
   ],
   variable: "--font-playwrite",
+  display: "swap",
 });
 
 export const PTSerif = localFont({
@@ -98,4 +100,5 @@ export const PTSerif = localFont({
     },
   ],
   variable: "--font-pt-serif",
+  display: "swap",
 });

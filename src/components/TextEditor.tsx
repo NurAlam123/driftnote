@@ -1,63 +1,74 @@
-"use client";
+import { BlockNoteView, lightDefaultTheme, Theme } from "@blocknote/mantine";
+import "@blocknote/mantine/style.css";
+import { useCreateBlockNote } from "@blocknote/react";
+import { useEffect } from "react";
 
-import EditorJS, {
-  EditorConfig,
-  ToolConstructable,
-  ToolSettings,
-} from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import List from "@editorjs/list";
-import { useEffect, useRef } from "react";
+export default function App({
+  setMarkdown,
+}: {
+  setMarkdown: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const editor = useCreateBlockNote({
+    initialContent: [
+      { type: "heading", content: "Title Here!" },
+      {
+        type: "paragraph",
+        content: "Write anything here or type '/' for commands...",
+      },
+    ],
+  });
 
-type CustomToolSetting = ToolSettings & {
-  class: ToolConstructable;
-  config?: object;
-};
-
-interface CustomEditorConfig extends EditorConfig {
-  tools: {
-    [toolName: string]: CustomToolSetting | object;
-  };
-}
-
-const EDITOR_TOOLS = {
-  header: {
-    class: Header,
-    shortcut: "CMD+SHIFT+H",
-    config: {
-      levels: [2, 3, 4],
-      defaultLevel: 2,
+  const lightTheme: Theme = {
+    colors: {
+      editor: {
+        text: "#27272a",
+        background: "#fafafa",
+      },
+      menu: {
+        text: "#27272a",
+        background: "#f4f4f5",
+      },
+      tooltip: {
+        text: "#fafafa",
+        background: "#3f3f46",
+      },
+      hovered: {
+        text: "#27272a",
+        background: "#e4e4e7",
+      },
+      selected: {
+        text: "#27272a",
+        background: "oklch(87.1% 0.006 286.286)",
+      },
+      disabled: {
+        text: "#a2a2a2",
+        background: "#e4e4e7",
+      },
+      shadow: "#d4d4d8",
+      border: "#e4e4e7",
+      sideMenu: "#27272a",
+      highlights: lightDefaultTheme.colors!.highlights,
     },
-  },
-  list: List,
-};
+    borderRadius: 6,
+  };
 
-const TextEditor = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const editor = useRef<EditorJS>(null);
-  const spawnRef = useRef(false);
+  const getMarkdown = async () => {
+    const markdown = await editor.blocksToMarkdownLossy(editor.document);
+    setMarkdown(markdown);
+  };
 
   useEffect(() => {
-    if (!spawnRef.current) {
-      if (!containerRef.current) return;
-
-      const config: CustomEditorConfig = {
-        holder: containerRef.current,
-        tools: EDITOR_TOOLS,
-      };
-
-      editor.current = new EditorJS(config);
-      spawnRef.current = true;
-    }
+    getMarkdown();
   });
 
   return (
-    <>
-      <div className="border" id="editorjs" ref={containerRef}>
-        TextEditor
-      </div>
-    </>
+    <div className="p-2">
+      <BlockNoteView
+        editor={editor}
+        theme={lightTheme}
+        data-block-note-font
+        onChange={getMarkdown}
+      />
+    </div>
   );
-};
-
-export default TextEditor;
+}

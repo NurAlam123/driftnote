@@ -1,89 +1,78 @@
 "use client";
-
-//import { handleForm } from "@/actions/create";
-//import TextEditor from "@/components/TextEditor";
+import { createPost } from "@/actions/create";
 import dynamic from "next/dynamic";
-//import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const TextEditor = dynamic(() => import("@/components/TextEditor"), {
   ssr: false,
 });
 
 export default function PostCreatePage() {
-  //const [title, setTitle] = useState("");
-  //const [content, setContent] = useState("");
-  //const [submit, setSubmit] = useState(true);
-  //
-  //const titleMinLimit = 5;
-  //const contentMinLimit = 50;
-  //
-  //// for auto resizeable textarea
-  //useEffect(() => {
-  //  document.querySelectorAll("textarea").forEach((textarea) => {
-  //    textarea.style.height = textarea.scrollHeight + "px";
-  //    textarea.style.overflowY = "hidden";
-  //
-  //    textarea.addEventListener("input", function () {
-  //      this.style.height = this.scrollHeight + "px";
-  //    });
-  //  });
-  //});
-  //
-  //const titleHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
-  //  const value = el.currentTarget.value;
-  //  setTitle(value);
-  //
-  //  if (
-  //    content.trim().length <= titleMinLimit ||
-  //    value.trim().length <= contentMinLimit
-  //  )
-  //    setSubmit(true);
-  //  else setSubmit(false);
-  //};
-  //const contentHandler = (el: React.FormEvent<HTMLTextAreaElement>) => {
-  //  const value = el.currentTarget.value;
-  //  setContent(value);
-  //
-  //  if (
-  //    title.trim().length <= titleMinLimit ||
-  //    value.trim().length <= contentMinLimit
-  //  )
-  //    setSubmit(true);
-  //  else setSubmit(false);
-  //};
+  const [markdow, setMarkdown] = useState<string>("");
+
+  const badTitles = [
+    "",
+    "title",
+    "title here",
+    "title here!",
+    "insert title here",
+    "heading",
+    "heading 1",
+    "untitled",
+    "no title",
+    "markdown",
+    "document",
+    "page 1",
+    "page one",
+    "chapter 1",
+    "introduction",
+    "welcome",
+    "home",
+    "about",
+    "readme",
+    "index",
+    "start",
+    "sample title",
+    "test",
+    "example",
+    "demo",
+    "lorem ipsum",
+  ];
+
+  const checkAndGetTitle = () => {
+    const lines = markdow.split("\n").map((line) => line.trim());
+    const firstLine = lines[0].toLowerCase().trim();
+    if (
+      !firstLine.startsWith("#") ||
+      firstLine === "#" ||
+      badTitles.includes(firstLine.replace("#", "").trim())
+    ) {
+      return;
+    }
+
+    return lines[0].replace("#", "").trim();
+  };
+
+  const submitHandler = async () => {
+    const title = checkAndGetTitle();
+    if (!title) return;
+
+    await createPost(title, markdow);
+  };
 
   return (
-    <>
-      <TextEditor />
-      {/*<form
-      action={handleForm}
-      className="relative bg-background text-foreground"
-    >
-      <button
-        type="submit"
-        className="bg-blue-500 text-white absolute top-0 right-0 px-6 py-2 m-4 rounded-full font-bold disabled:bg-gray-400 disabled:cursor-not-allowed"
-        disabled={submit}
-      >
-        Submit
-      </button>
-      <div className="font-pt-serif">
-        <textarea
-          name="title"
-          value={title}
-          onChange={titleHandler}
-          className="resize-none text-wrap w-full h-full bg-inherit text-inherit outline-none text-4xl ps-12 mt-20"
-          placeholder="Title here..."
-        />
-        <textarea
-          name="content"
-          value={content}
-          onChange={contentHandler}
-          className="w-full h-96 resize-none text-inherit outline-none bg-inherit text-lg ps-12"
-          placeholder="Write your blog here..."
-        />
+    <div className="h-screen flex flex-col">
+      <div className="flex justify-end my-2">
+        <button
+          className="bg-blue-500 text-white font-semibold px-4 py-1 rounded-full"
+          onClick={submitHandler}
+        >
+          Submit
+        </button>
       </div>
-    </form>
-    */}
-    </>
+      <div className="border rounded-md flex-1 mb-4 h-full overflow-auto shadow-sm">
+        <TextEditor setMarkdown={setMarkdown} />
+      </div>
+    </div>
   );
 }

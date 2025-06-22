@@ -1,23 +1,13 @@
 "use server";
 
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import slugify from "react-slugify";
 
-export const handleForm = async (formData: FormData) => {
-  const title = formData.get("title") as string;
-  const content = formData.get("content") as string;
+export const createPost = async (title: string, content: string) => {
+  const slug = await generateUniqueSlug(title);
 
-  const titleMinLimit = 5;
-  const contentMinLimit = 50;
-
-  if (
-    title.trim().length <= titleMinLimit ||
-    content.trim().length <= contentMinLimit
-  )
-    return;
-
-  const slug = slugify(title);
   // Add to database
   await prisma.post.create({
     data: {
@@ -27,5 +17,21 @@ export const handleForm = async (formData: FormData) => {
     },
   });
 
+  revalidatePath(`/blog/${slug}`);
   redirect(`/blog/${slug}`);
+};
+
+export const generateUniqueSlug = async (title: string): Promise<string> => {
+  const slug = slugify(title);
+
+  const exist = await prisma.post.findMany({
+    where: {
+      slug,
+    },
+  });
+
+  const count = exist.length;
+  if (count <= 0) return slug;
+
+  return `${slug}-${count}`;
 };
