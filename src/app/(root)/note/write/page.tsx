@@ -25,14 +25,14 @@ export default function PostCreatePage() {
     <div className="h-screen flex flex-col">
       <div className="flex justify-end my-2">
         <button
-          className="bg-blue-500 text-white font-semibold px-4 py-1 rounded-full disabled:bg-zinc-100 disabled:border disabled:text-zinc-400 transition-colors duration-100 disabled:cursor-not-allowed"
+          className="bg-blue-500 text-white font-semibold px-4 py-1 rounded-full disabled:bg-zinc-100 disabled:text-zinc-400 transition-colors duration-100 disabled:cursor-not-allowed shadow-md mx-2"
           onClick={submitHandler}
           disabled={disabled}
         >
           Submit
         </button>
       </div>
-      <div className="border rounded-md flex-1 mb-4 h-full overflow-auto shadow-sm">
+      <div className="rounded-md flex-1 mb-4 h-full overflow-auto shadow-sm">
         <TextEditor setMarkdown={setMarkdown} setDisabled={setDisabled} />
       </div>
     </div>

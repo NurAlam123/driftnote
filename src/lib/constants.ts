@@ -1,5 +1,6 @@
 export const badTitles = [
   "",
+  "asdf",
   "title",
   "title here",
   "title here!",

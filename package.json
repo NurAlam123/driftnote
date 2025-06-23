@@ -1,5 +1,5 @@
 {
-  "name": "analog",
+  "name": "driftnote",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,6 @@
     "@blocknote/core": "^0.31.3",
     "@blocknote/mantine": "^0.31.3",
     "@blocknote/react": "^0.31.3",
-    "@editorjs/quote": "^2.7.6",
     "@prisma/client": "^6.10.1",
     "@prisma/extension-accelerate": "^1.3.0",
     "@tailwindcss/typography": "^0.5.16",

@@ -23,13 +23,7 @@ export default function App({
         default: "Write anything here or type '/' for commands...",
       },
     },
-    initialContent: [
-      { type: "heading", content: "Title Here!" },
-      {
-        type: "paragraph",
-        content: "",
-      },
-    ],
+    initialContent: [{ type: "heading", content: "" }],
   });
 
   const lightTheme: Theme = {
@@ -96,7 +90,7 @@ export default function App({
   });
 
   return (
-    <div className="p-2">
+    <div className="md:p-2">
       <BlockNoteView
         editor={editor}
         theme={lightTheme}
