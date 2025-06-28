@@ -3,7 +3,10 @@ import "./globals.css";
 import { playwrite, PTSerif, roboto } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "DriftNote",
+  title: {
+    default: "DriftNote",
+    template: "%s | DriftNote",
+  },
   description: "Share your thoughts freely and anonymously.",
 };
 

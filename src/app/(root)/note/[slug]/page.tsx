@@ -6,7 +6,27 @@ type ParamsType = Promise<{
   slug: string;
 }>;
 
-export default async function NotePage({ params }: { params: ParamsType }) {
+interface Props {
+  params: ParamsType;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+
+  const post = await prisma.post.findUnique({
+    where: {
+      slug,
+    },
+  });
+
+  if (!post) return {};
+
+  return {
+    title: post.title,
+  };
+}
+
+export default async function NotePage({ params }: Props) {
   const { slug } = await params;
 
   const post = await prisma.post.findUnique({
