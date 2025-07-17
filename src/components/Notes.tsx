@@ -6,6 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { Post } from "@prisma/client";
+import { Badge } from "./ui/badge";
 
 const Notes = () => {
   dayjs.extend(relativeTime);
@@ -22,13 +23,13 @@ const Notes = () => {
   return (
     <section>
       <div>
-        <h2 className="font-bold text-3xl">
-          All Notes{" "}
-          <span className="text-neutral-500">[ {data.numberOfPosts} ]</span>
-        </h2>
+        <h4 className="font-medium text-xl flex items-center gap-2">
+          <span className="block">All Notes</span>{" "}
+          <Badge>{data.numberOfPosts}</Badge>
+        </h4>
       </div>
       <div className="mt-6 ms-4">
-        <ul className="list-none space-y-4 decoration-dotted md:text-xl">
+        <ul className="list-none space-y-4 decoration-dotted">
           {data.posts.map((post: Post) => (
             <li key={post.slug} className="list-item w-fit">
               <div className="flex gap-2 items-center">
