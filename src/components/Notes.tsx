@@ -28,13 +28,13 @@ const Notes = () => {
         </h2>
       </div>
       <div className="mt-6 ms-4">
-        <ul className="list-none space-y-4 [text-decoration-style:dotted] md:text-xl">
+        <ul className="list-none space-y-4 decoration-dotted md:text-xl">
           {data.posts.map((post: Post) => (
             <li key={post.slug} className="list-item w-fit">
               <div className="flex gap-2 items-center">
                 <Link
                   href={`/note/${post.slug}`}
-                  className="flex text-foreground items-center gap-2 *:underline *:underline-offset-4 *:[text-decoration-style:dashed]"
+                  className="flex text-foreground items-center gap-2 *:underline *:underline-offset-4 *:decoration-dashed"
                 >
                   <NotebookText />
                   <span className="leading-tight">{post.title}</span>

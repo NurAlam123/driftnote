@@ -32,7 +32,7 @@ export default function CreatePost() {
           Submit
         </button>
       </div>
-      <div className="rounded-md flex-1 mb-4 h-full overflow-auto shadow-sm">
+      <div className="rounded-md flex-1 mb-4 h-full overflow-auto shadow-xs">
         <TextEditor setMarkdown={setMarkdown} setDisabled={setDisabled} />
       </div>
     </div>
