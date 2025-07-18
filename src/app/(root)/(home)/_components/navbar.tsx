@@ -1,6 +1,7 @@
 import Logo from "@/components/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggler";
 import { Button } from "@/components/ui/button";
+import User from "@/components/user";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 
@@ -15,9 +16,12 @@ const Navbar = () => {
           <Button asChild>
             <Link href="/note/write">
               <Pencil />
-              <span className="ms-1">Write</span>
+              <span className="ms-0.5 hidden md:inline">Write</span>
             </Link>
           </Button>
+        </div>
+        <div>
+          <User />
         </div>
       </div>
     </nav>
