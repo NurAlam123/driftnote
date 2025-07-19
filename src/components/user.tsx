@@ -1,6 +1,6 @@
 "use client";
 
-import { AtSign, Check, LucideIcon, Mail, Pen } from "lucide-react";
+import { AtSign, LucideIcon, Mail, Pen } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Sheet,

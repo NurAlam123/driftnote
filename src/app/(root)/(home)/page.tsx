@@ -1,4 +1,4 @@
-import Notes from "@/components/Notes";
+import Notes from "./_components/notes";
 
 export const metadata = {
   title: "Home",

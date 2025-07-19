@@ -14,7 +14,7 @@ const Notes = () => {
   const url = "/api/posts";
 
   const { data, error, isLoading } = useSWR(url, fetcher, {
-    refreshInterval: 60 * 1000,
+    refreshInterval: 120 * 1000,
   });
 
   if (error) return <div>Failed to load</div>;
