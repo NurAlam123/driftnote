@@ -1,32 +1,55 @@
 "use client";
 
-import { AtSign, LucideIcon, Mail, Pen } from "lucide-react";
+import { AtSign, LogOutIcon, LucideIcon, Mail, Pen } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 import { Input } from "./ui/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Label } from "./ui/label";
 import { cn } from "@/lib/utils";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { logout } from "@/actions/logout";
+import { useAuthStore } from "@/store/auth-store";
+import { getGhost } from "@/actions/getGhost";
 
-const User = () => {
+const User = ({ user }: { user: SupabaseUser }) => {
+  const ghost = useAuthStore((state) => state.ghost);
+  const setGhost = useAuthStore((state) => state.setGhost);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLoading(true);
+    getGhost({ email: user.email || "" }).then((res) => {
+      if (res.data) {
+        setGhost(res.data);
+        setLoading(false);
+      }
+    });
+  }, [setGhost, user.email]);
+
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button
-          variant="link"
-          className="flex items-center gap-0.5 text-primary text-xs md:text-sm"
-        >
-          <AtSign />
-          <span className="hidden md:inline">nuralam</span>
-        </Button>
-      </SheetTrigger>
+      {loading ? (
+        <p>loading</p>
+      ) : (
+        <SheetTrigger asChild>
+          <Button
+            variant="link"
+            className="flex items-center gap-0.5 text-primary text-xs md:text-sm"
+          >
+            <AtSign />
+            <span className="hidden md:inline">{ghost?.username}</span>
+          </Button>
+        </SheetTrigger>
+      )}
 
       <SheetContent>
         <SheetHeader>
@@ -35,14 +58,27 @@ const User = () => {
         </SheetHeader>
         <div className="px-4">
           <div className="flex flex-col items-center gap-4 relative justify-start">
-            <User.Input label="username" value="nuralam" icon={AtSign} />
+            <User.Input
+              label="username"
+              value={ghost?.username as string}
+              icon={AtSign}
+            />
             <User.Input
               label="email"
-              value="nuralam.rsc@gmail.com"
+              value={user.email as string}
               icon={Mail}
             />
           </div>
         </div>
+        <SheetFooter>
+          <Button
+            variant="destructive"
+            className="flex items-center"
+            onClick={logout}
+          >
+            Logout <LogOutIcon className="size-4 ml-2" />
+          </Button>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

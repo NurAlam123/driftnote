@@ -14,6 +14,7 @@
     "@blocknote/core": "^0.31.3",
     "@blocknote/mantine": "^0.31.3",
     "@blocknote/react": "^0.31.3",
+    "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.12.0",
     "@prisma/extension-accelerate": "^1.3.0",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -22,6 +23,8 @@
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-scroll-area": "^1.2.9",
     "@radix-ui/react-slot": "^1.2.3",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.52.0",
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
@@ -33,10 +36,13 @@
     "prisma": "^6.12.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
     "react-markdown": "^10.1.0",
     "react-slugify": "^4.0.1",
     "swr": "^2.3.4",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.0.5",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",

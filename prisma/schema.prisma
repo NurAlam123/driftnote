@@ -13,8 +13,21 @@ model Post {
   title     String
   slug      String   @unique
   content   String
+  ghost     Ghost    @relation(fields: [username], references: [username])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  username  String   @default("ghost")
 
   @@map("post")
+}
+
+model Ghost {
+  email     String   @unique
+  username  String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Post      Post[]
+  verified  Boolean  @default(false)
+
+  @@map("ghost")
 }

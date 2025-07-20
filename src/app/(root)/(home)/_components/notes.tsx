@@ -59,10 +59,6 @@ const Notes = () => {
   );
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     const options: IntersectionObserverInit = {
       root: null,
       threshold: 0.2,
@@ -89,6 +85,7 @@ const Notes = () => {
       {isLoading && <p>Loading...</p>}
       {data && (
         <Suspense fallback={<p>LOADiNg</p>}>
+          {!data[0].count && <p>NO DATA</p>}
           <div>
             <div ref={containerRef}>
               {data?.map((noteData, i) => (
