@@ -13,7 +13,7 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
+  const post = await prisma.trace.findUnique({
     where: {
       slug,
     },
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function NotePage({ params }: Props) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
+  const post = await prisma.trace.findUnique({
     where: {
       slug,
     },

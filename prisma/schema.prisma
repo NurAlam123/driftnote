@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Post {
+model Trace {
   id        String   @id @default(cuid())
   title     String
   slug      String   @unique
@@ -18,7 +18,7 @@ model Post {
   updatedAt DateTime @updatedAt @map("updated_at")
   username  String   @default("ghost")
 
-  @@map("post")
+  @@map("trace")
 }
 
 model Ghost {
@@ -26,7 +26,7 @@ model Ghost {
   username  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  Post      Post[]
+  traces    Trace[]
   verified  Boolean  @default(false)
 
   @@map("ghost")

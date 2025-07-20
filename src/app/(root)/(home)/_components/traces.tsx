@@ -14,9 +14,9 @@ import {
   useState,
 } from "react";
 import useSWRInfinite from "swr/infinite";
-import NoteCard from "./note-card";
+import TraceCard from "./trace-card";
 
-const Notes = () => {
+const Traces = () => {
   dayjs.extend(relativeTime);
 
   const limit = 10;
@@ -89,7 +89,7 @@ const Notes = () => {
           <div>
             <div ref={containerRef}>
               {data?.map((noteData, i) => (
-                <NoteCard key={i} notes={noteData.notes} />
+                <TraceCard key={i} notes={noteData.notes} />
               ))}
 
               {last && <div ref={cardRef} className="h-10" />}
@@ -101,4 +101,4 @@ const Notes = () => {
   );
 };
 
-export default memo(Notes);
+export default memo(Traces);

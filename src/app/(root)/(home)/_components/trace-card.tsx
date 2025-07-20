@@ -15,7 +15,7 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-const NoteCard = ({ notes }: { notes: Post[] }) => {
+const TraceCard = ({ notes }: { notes: Post[] }) => {
   dayjs.extend(relativeTime);
 
   return (
@@ -53,4 +53,4 @@ const NoteCard = ({ notes }: { notes: Post[] }) => {
   );
 };
 
-export default NoteCard;
+export default TraceCard;

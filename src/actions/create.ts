@@ -12,7 +12,7 @@ export const createPost = async (title: string, content: string) => {
   const slug = await generateUniqueSlug(title);
 
   // Add to database
-  await prisma.post.create({
+  await prisma.trace.create({
     data: {
       title,
       content,
@@ -27,7 +27,7 @@ export const createPost = async (title: string, content: string) => {
 export const generateUniqueSlug = async (title: string): Promise<string> => {
   const slug = slugify(title);
 
-  const exist = await prisma.post.findMany({
+  const exist = await prisma.trace.findMany({
     where: {
       slug,
     },

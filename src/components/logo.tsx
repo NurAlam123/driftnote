@@ -4,7 +4,7 @@ const Logo = () => {
   return (
     <div>
       <Link href="/" className="text-xl md:text-xl font-bold font-playwrite">
-        DriftNote
+        ghosto
       </Link>
     </div>
   );

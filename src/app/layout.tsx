@@ -5,10 +5,10 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 
 export const metadata: Metadata = {
   title: {
-    default: "DriftNote",
-    template: "%s | DriftNote",
+    default: "Ghosto",
+    template: "%s | Ghosto",
   },
-  description: "Share your thoughts freely and anonymously.",
+  description: "Share your ghostly thoughts freely.",
 };
 
 export default function RootLayout({

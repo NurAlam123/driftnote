@@ -6,14 +6,14 @@ export async function GET(req: Request) {
   const query = url.searchParams;
   const limit = Number(query.get("limit")) || 0;
 
-  const notes = await prisma.post.findMany({
+  const notes = await prisma.trace.findMany({
     orderBy: {
       createdAt: "desc",
     },
     take: 10,
     skip: limit,
   });
-  const count = await prisma.post.count();
+  const count = await prisma.trace.count();
 
   const data = JSON.stringify({
     count,
