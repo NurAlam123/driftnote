@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="px-2.5 pt-8 pb-4 border-b-2 border-dashed flex items-center justify-between">
+    <nav className="sticky top-0 px-2.5 pt-8 pb-4 border-b-2 border-dashed flex items-center justify-between bg-background">
       <Logo />
 
       <div className="flex items-center gap-2">

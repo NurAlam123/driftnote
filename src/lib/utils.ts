@@ -28,3 +28,12 @@ export const getContent = (markdown: string) => {
   const content = lines.slice(1);
   return { lines, content };
 };
+
+export const range = ({ from = 0, to }: { from?: number; to: number }) => {
+  const rangeArr = [];
+  for (let i = from; i < to; i++) {
+    rangeArr.push(i);
+  }
+
+  return rangeArr;
+};

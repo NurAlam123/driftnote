@@ -1,126 +1,107 @@
 "use client";
 
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-
+import { fetcher } from "@/lib/utils";
 import { Post } from "@prisma/client";
 
-import useSWR, { SWRResponse } from "swr";
-import { fetcher } from "@/lib/utils";
-
-// import { AtSign, Ghost } from "lucide-react";
-
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
+  memo,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import useSWRInfinite from "swr/infinite";
+import NoteCard from "./note-card";
 
 const Notes = () => {
   dayjs.extend(relativeTime);
 
-  const url = "/api/posts";
+  const limit = 10;
 
-  const {
-    data,
-    error,
-    isLoading,
-  }: SWRResponse<{ count: number; notes: Post[] }> = useSWR(url, fetcher, {
-    refreshInterval: 120 * 1000,
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver>(null);
+  const [last, setLast] = useState<boolean>(true);
 
-  if (!data) return <div>No data found</div>;
+  const getKey = (
+    pageIndex: number,
+    previousPageData: { count: number; notes: Post[] },
+  ) => {
+    if (
+      previousPageData &&
+      previousPageData.notes.length >= previousPageData.count
+    ) {
+      setLast(false);
+      return null;
+    }
+    return `/api/posts?limit=${pageIndex * limit}`;
+  };
+
+  const { data, setSize, error, isLoading } = useSWRInfinite(getKey, fetcher);
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (isLoading) return;
+      const target = entries[0];
+
+      if (target.isIntersecting && !isLoading) {
+        setTimeout(() => {
+          setSize((prev) => prev + 1);
+        }, 200);
+
+        observerRef.current?.unobserve(target.target);
+      }
+    },
+    [isLoading, setSize],
+  );
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    const options: IntersectionObserverInit = {
+      root: null,
+      threshold: 0.2,
+      rootMargin: "20px",
+    };
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver(handleObserver, options);
+
+    if (!cardRef.current) return;
+    observerRef.current.observe(cardRef.current);
+
+    return () => {
+      if (observerRef.current) observerRef.current.disconnect();
+    };
+  }, [handleObserver]);
+
   if (error) return <div>Failed to load</div>;
-  if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <Notes.DataTable columns={columns} data={data.notes} />
-    </div>
+    <>
+      {isLoading && <p>Loading...</p>}
+      {data && (
+        <Suspense fallback={<p>LOADiNg</p>}>
+          <div>
+            <div ref={containerRef}>
+              {data?.map((noteData, i) => (
+                <NoteCard key={i} notes={noteData.notes} />
+              ))}
+
+              {last && <div ref={cardRef} className="h-10" />}
+            </div>
+          </div>
+        </Suspense>
+      )}
+    </>
   );
 };
 
-const columns: ColumnDef<Post>[] = [
-  {
-    accessorKey: "title",
-    header: "title",
-  },
-  {
-    accessorKey: "createdAt",
-    header: "posted on",
-  },
-];
-
-Notes.DataTable = function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  );
-};
-
-export default Notes;
+export default memo(Notes);
