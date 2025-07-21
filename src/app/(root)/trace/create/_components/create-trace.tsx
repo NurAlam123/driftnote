@@ -16,7 +16,7 @@ const TextEditor = dynamic(() => import("@/components/text-editor"), {
 export default function CreateTrace() {
   const [markdown, setMarkdown] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(!false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const ghost = useAuthStore((state) => state.ghost);
   const setGhost = useAuthStore((state) => state.setGhost);

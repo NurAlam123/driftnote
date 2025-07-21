@@ -28,6 +28,7 @@ const Traces = () => {
   const observerRef = useRef<IntersectionObserver>(null);
 
   const [last, setLast] = useState<boolean>(true);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const getKey = (
     pageIndex: number,
@@ -43,22 +44,27 @@ const Traces = () => {
     return `/api/posts?limit=${pageIndex * limit}`;
   };
 
-  const { data, setSize, error, isLoading } = useSWRInfinite(getKey, fetcher);
+  const { data, size, setSize, error, isLoading } = useSWRInfinite(
+    getKey,
+    fetcher,
+  );
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       if (isLoading) return;
+      setIsFetching(true);
       const target = entries[0];
 
       if (target.isIntersecting && !isLoading) {
         setTimeout(() => {
           setSize((prev) => prev + 1);
+          setIsFetching(false);
         }, 200);
 
         observerRef.current?.unobserve(target.target);
       }
     },
-    [isLoading, setSize],
+    [isLoading, setSize, setIsFetching],
   );
 
   useEffect(() => {
@@ -104,11 +110,20 @@ const Traces = () => {
                   <TraceCard key={i} notes={noteData.notes} />
                 ))}
 
-                {last && <div ref={cardRef} className="h-10" />}
+                {last && data[0].count > limit && (
+                  <div ref={cardRef} className="h-2" />
+                )}
+                {isFetching && (
+                  <div className="w-full flex justify-center items-center h-6">
+                    <div>
+                      <div className="loader w-2" />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </Suspense>
-          {!isLoading && data[0].count <= limit && (
+          {(!isLoading || !isFetching) && data[0].count <= limit * size && (
             <div className="flex flex-col justify-center items-center text-muted-foreground mt-4 text-xs">
               <p>You have reached the end.</p>
               <DotIcon />
