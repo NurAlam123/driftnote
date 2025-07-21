@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 const Navbar = ({
   onClick,
   disabled,
+  loading,
 }: {
   onClick: () => void;
   disabled: boolean;
+  loading: boolean;
 }) => {
   return (
     <nav className="sticky top-0 px-2.5 pt-8 pb-4 border-b-2 border-dashed flex items-center justify-between bg-background z-20">
@@ -18,7 +20,13 @@ const Navbar = ({
 
         <div className="flex justify-end my-2">
           <Button onClick={onClick} disabled={disabled}>
-            Booo...
+            {loading ? (
+              <div className="px-4.5">
+                <div className="w-2 loader" />
+              </div>
+            ) : (
+              <>Booo...</>
+            )}
           </Button>
         </div>
       </div>
