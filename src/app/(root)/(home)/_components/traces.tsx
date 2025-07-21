@@ -15,6 +15,7 @@ import {
 } from "react";
 import useSWRInfinite from "swr/infinite";
 import TraceCard from "./trace-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Traces = () => {
   dayjs.extend(relativeTime);
@@ -79,14 +80,22 @@ const Traces = () => {
     };
   }, [handleObserver]);
 
-  if (error) return <div>Failed to load</div>;
+  if (error) return <Traces.FailedTraces />;
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {data && (
-        <Suspense fallback={<p>LOADiNg</p>}>
-          {!data[0].count && <p>NO DATA</p>}
+      {isLoading && (
+        <div className="space-y-2 mt-4">
+          <Skeleton className="w-full h-32 rounded-xl" />
+          <Skeleton className="w-full h-32 rounded-xl" />
+          <Skeleton className="w-full h-32 rounded-xl" />
+          <Skeleton className="w-full h-32 rounded-xl" />
+          <Skeleton className="w-full h-32 rounded-xl" />
+        </div>
+      )}
+      {!isLoading && data && (
+        <Suspense fallback={<Skeleton className="w-full h-32 rounded-xl" />}>
+          {!data[0].count && <Traces.NoTraces />}
           <div>
             <div ref={containerRef}>
               {data?.map((noteData, i) => (
@@ -99,6 +108,24 @@ const Traces = () => {
         </Suspense>
       )}
     </>
+  );
+};
+
+Traces.NoTraces = function NoTraces() {
+  return (
+    <div className="w-full h-[50vh] flex justify-center items-center">
+      <div className="text-muted-foreground font-medium">
+        ALL TRACES ARE VANISHED :&apos;({" "}
+      </div>
+    </div>
+  );
+};
+
+Traces.FailedTraces = function FailedTraces() {
+  return (
+    <div className="w-full h-[50vh] flex justify-center items-center">
+      <div className="text-muted-foreground font-medium">NO TRACES FOUND</div>
+    </div>
   );
 };
 

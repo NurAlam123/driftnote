@@ -1,5 +1,5 @@
 "use client";
-import TimeFormat from "@/components/TimeFormat";
+import TimeFormat from "@/components/time-format";
 import { Trace as TraceType } from "@prisma/client";
 import { AtSign } from "lucide-react";
 import Markdown from "react-markdown";

@@ -9,7 +9,7 @@ import { useAuthStore } from "@/store/auth-store";
 import { getGhost } from "@/actions/getGhost";
 import { createClient } from "@/lib/supabase/client";
 
-const TextEditor = dynamic(() => import("@/components/TextEditor"), {
+const TextEditor = dynamic(() => import("@/components/text-editor"), {
   ssr: false,
 });
 

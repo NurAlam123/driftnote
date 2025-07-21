@@ -1,8 +1,7 @@
-// import Note from "@/components/Note";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 import Trace from "./_components/trace";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar";
 
 type ParamsType = Promise<{
   slug: string;

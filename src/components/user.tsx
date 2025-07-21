@@ -19,6 +19,7 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 import { logout } from "@/actions/logout";
 import { useAuthStore } from "@/store/auth-store";
 import { getGhost } from "@/actions/getGhost";
+import { Skeleton } from "./ui/skeleton";
 
 const User = ({ user }: { user: SupabaseUser }) => {
   const ghost = useAuthStore((state) => state.ghost);
@@ -42,7 +43,7 @@ const User = ({ user }: { user: SupabaseUser }) => {
   return (
     <Sheet>
       {loading ? (
-        <p>loading</p>
+        <User.Skeleton />
       ) : (
         <SheetTrigger asChild>
           <Button
@@ -149,6 +150,10 @@ User.Input = function UserInput({
       </div>
     </div>
   );
+};
+
+User.Skeleton = function UserSkeleton() {
+  return <Skeleton className="w-30 h-6" />;
 };
 
 export default User;
