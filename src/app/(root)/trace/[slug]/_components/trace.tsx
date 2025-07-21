@@ -1,10 +1,40 @@
 "use client";
+import { deleteTrace } from "@/actions/deleteTrace";
 import TimeFormat from "@/components/time-format";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth-store";
 import { Trace as TraceType } from "@prisma/client";
-import { AtSign } from "lucide-react";
+import { AtSign, Trash, XCircleIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import Markdown from "react-markdown";
+import { toast } from "sonner";
 
 const Trace = ({ trace }: { trace: TraceType }) => {
+  const ghost = useAuthStore((state) => state.ghost);
+
+  const onDelete = async () => {
+    const res = await deleteTrace({ id: trace.id });
+
+    if (!res?.success) {
+      toast.error(res?.error);
+      return;
+    }
+
+    toast.success("Post deleted");
+    redirect("/");
+  };
+
   return (
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 mb-12">
       <div>
@@ -30,11 +60,50 @@ const Trace = ({ trace }: { trace: TraceType }) => {
           <Markdown>{trace.content}</Markdown>
         </article>
       </div>
-      <div className="relative mt-12 md:mt-24">
-        <div className="absolute inset-0 border-t-4 [border-style:dotted]" />
-        <span className="absolute fotn-bold text-xl -top-1/2 -translate-y-1/2 px-2 bg-background text-neutral-300 block left-1/2 -translate-x-1/2">
-          End
-        </span>
+      <div className="relative mt-6 md:mt-12">
+        <div className="my-2">
+          <div className="flex w-full justify-end gap-2">
+            {/* <Button> */}
+            {/*   <Pen /> */}
+            {/* </Button> */}
+            {trace.username === ghost?.username && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">
+                    <Trash />
+                  </Button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      the trace.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>
+                      <XCircleIcon /> Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction onClick={onDelete}>
+                      <Trash /> Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+          </div>
+        </div>
+        <div className="relative">
+          <div className="absolute inset-0 border-t-4 [border-style:dotted]" />
+          <span className="absolute fotn-bold font-playwrite text-xl -top-1/2 -translate-y-1/2 px-2 bg-background text-neutral-300 block left-1/2 -translate-x-1/2">
+            End
+          </span>
+        </div>
       </div>
     </section>
   );

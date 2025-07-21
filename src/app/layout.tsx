@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 export const metadata: Metadata = {
   title: {
     default: "Ghosto",
-    template: "%s | Ghosto",
+    template: "%s // Ghosto",
   },
   description: "Share your ghostly thoughts freely.",
 };
