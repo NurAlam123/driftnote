@@ -19,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Ghosto" />
+      </head>
       <body
         className={`${roboto.variable} ${PTSerif.variable} ${playwrite.variable} font-roboto antialiased`}
       >
