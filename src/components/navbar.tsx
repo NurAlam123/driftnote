@@ -11,7 +11,7 @@ const Navbar = async () => {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <nav className="sticky top-0 px-2.5 pt-8 pb-4 border-b-2 border-dashed flex items-center justify-between bg-background">
+    <nav className="sticky top-0 px-2.5 pt-8 pb-4 border-b-2 border-dashed flex items-center justify-between bg-background z-[99]">
       <Logo />
 
       <div className="flex items-center gap-2">

@@ -34,12 +34,9 @@ const Traces = () => {
     pageIndex: number,
     previousPageData: { count: number; notes: Trace[] },
   ) => {
-    if (
-      previousPageData &&
-      previousPageData.notes.length >= previousPageData.count
-    ) {
+    if (previousPageData && previousPageData.count < (pageIndex + 1) * limit) {
       setLast(false);
-      return null;
+      setIsFetching(false);
     }
     return `/api/posts?limit=${pageIndex * limit}`;
   };
@@ -57,14 +54,13 @@ const Traces = () => {
 
       if (target.isIntersecting && !isLoading) {
         setTimeout(() => {
-          setSize((prev) => prev + 1);
-          setIsFetching(false);
+          setSize(size + 1);
         }, 200);
 
         observerRef.current?.unobserve(target.target);
       }
     },
-    [isLoading, setSize, setIsFetching],
+    [isLoading, setSize, setIsFetching, size],
   );
 
   useEffect(() => {
@@ -123,7 +119,7 @@ const Traces = () => {
               </div>
             </div>
           </Suspense>
-          {(!isLoading || !isFetching) && data[0].count <= limit * size && (
+          {!isFetching && data[0].count <= limit * size && (
             <div className="flex flex-col justify-center items-center text-muted-foreground mt-4 text-xs">
               <p>You have reached the end.</p>
               <DotIcon />
