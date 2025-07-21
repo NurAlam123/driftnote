@@ -1,29 +1,24 @@
-import { ArrowUpLeft, ArrowUpRight, NotepadTextDashed } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Ghost } from "lucide-react";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="bg-background flex items-center justify-center my-12 gap-4 w-full flex-col">
+    <div className="h-[70vh] flex justify-center items-center">
       <div>
-        <div className=" text-center flex flex-col items-center space-y-4">
-          <NotepadTextDashed className="size-64" />
-          <p className="font-bold text-2xl">No Note Found</p>
-        </div>
-        <div className="text-start mt-12 flex gap-2 items-center justify-center">
-          <Link
-            className="font-bold flex bg-blue-400 text-background border border-background px-8 py-4 rounded-full relative hover:bg-background hover:border-blue-400 hover:text-blue-400 transition"
-            href={"/"}
-          >
-            <ArrowUpLeft className="absolute left-4 top-2 size-4" />
-            Home
-          </Link>
-          <Link
-            className="font-bold flex bg-blue-400 text-background border border-background px-8 py-4 rounded-full relative hover:bg-background hover:border-blue-400 hover:text-blue-400 transition"
-            href={"/trace/create"}
-          >
-            Write Note
-            <ArrowUpRight className="absolute right-4 top-3 size-4" />
-          </Link>
+        <div className="flex gap-2 items-center">
+          <Ghost className="size-32" />
+          <div className="flex flex-col">
+            <span className="text-2xl font-medium">BOOOOOOOOOO!!!</span>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-medium">404</span>
+              <span className="text-xl">|</span>
+              <span className="text-xl"> Not Found</span>
+            </div>
+            <Button variant="outline" className="mt-2" asChild>
+              <Link href="/">Go Back</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

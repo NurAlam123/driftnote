@@ -16,6 +16,7 @@ import {
 import useSWRInfinite from "swr/infinite";
 import TraceCard from "./trace-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DotIcon } from "lucide-react";
 
 const Traces = () => {
   dayjs.extend(relativeTime);
@@ -94,18 +95,26 @@ const Traces = () => {
         </div>
       )}
       {!isLoading && data && (
-        <Suspense fallback={<Skeleton className="w-full h-32 rounded-xl" />}>
-          {!data[0].count && <Traces.NoTraces />}
-          <div>
-            <div ref={containerRef}>
-              {data?.map((noteData, i) => (
-                <TraceCard key={i} notes={noteData.notes} />
-              ))}
+        <>
+          <Suspense fallback={<Skeleton className="w-full h-32 rounded-xl" />}>
+            {!data[0].count && <Traces.NoTraces />}
+            <div>
+              <div ref={containerRef}>
+                {data?.map((noteData, i) => (
+                  <TraceCard key={i} notes={noteData.notes} />
+                ))}
 
-              {last && <div ref={cardRef} className="h-10" />}
+                {last && <div ref={cardRef} className="h-10" />}
+              </div>
             </div>
-          </div>
-        </Suspense>
+          </Suspense>
+          {!isLoading && data[0].count <= limit && (
+            <div className="flex flex-col justify-center items-center text-muted-foreground mt-4 text-xs">
+              <p>You have reached the end.</p>
+              <DotIcon />
+            </div>
+          )}
+        </>
       )}
     </>
   );

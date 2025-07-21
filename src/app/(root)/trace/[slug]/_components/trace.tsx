@@ -9,7 +9,7 @@ const Trace = ({ trace }: { trace: TraceType }) => {
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 mb-12">
       <div>
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold capitalize">
+          <h1 className="text-2xl md:text-3xl font-bold capitalize">
             {trace.title}
           </h1>
           <div className="flex items-center gap-2 md:gap-4 my-4 text-xs md:text-sm  text-neutral-500 dark:text-neutral-100">

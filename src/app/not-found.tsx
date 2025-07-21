@@ -1,21 +1,25 @@
-import { Coffee } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Ghost } from "lucide-react";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="bg-background h-svh flex items-center justify-center gap-4 w-full flex-col">
-      <div className="flex items-center gap-2">
-        <p className="text-4xl font-bold text-blue-400">404</p>
-        <Coffee className="size-32" />
-      </div>
+    <div className="h-svh flex justify-center items-center">
       <div>
-        <p className="text-xl text-foreground">Nothing to read here.</p>
-        <p className="text-xl font-bold text-foreground">
-          Go{" "}
-          <Link href="/" className="text-blue-400 underline underline-offset-2">
-            Home
-          </Link>
-        </p>
+        <div className="flex gap-2 items-center">
+          <Ghost className="size-32" />
+          <div className="flex flex-col">
+            <span className="text-2xl font-medium">BOOOOOOOOOO!!!</span>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-medium">404</span>
+              <span className="text-xl">|</span>
+              <span className="text-xl"> Not Found</span>
+            </div>
+            <Button variant="outline" className="mt-2" asChild>
+              <Link href="/">Go Back</Link>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
