@@ -1,6 +1,8 @@
 // import Note from "@/components/Note";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
+import Trace from "./_components/trace";
+import Navbar from "@/components/Navbar";
 
 type ParamsType = Promise<{
   slug: string;
@@ -29,20 +31,18 @@ export async function generateMetadata({ params }: Props) {
 export default async function NotePage({ params }: Props) {
   const { slug } = await params;
 
-  const post = await prisma.trace.findUnique({
+  const trace = await prisma.trace.findUnique({
     where: {
       slug,
     },
   });
 
-  if (!post) notFound();
-
-  const { createdAt, title, content } = post;
+  if (!trace) notFound();
 
   return (
     <>
-      <p>HI</p>
-      {/* <Note createdAt={createdAt} title={title} content={content} /> */}
+      <Navbar />
+      <Trace trace={trace} />
     </>
   );
 }

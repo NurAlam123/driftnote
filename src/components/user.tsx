@@ -26,6 +26,10 @@ const User = ({ user }: { user: SupabaseUser }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    if (ghost) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     getGhost({ email: user.email || "" }).then((res) => {
       if (res.data) {
@@ -33,7 +37,7 @@ const User = ({ user }: { user: SupabaseUser }) => {
         setLoading(false);
       }
     });
-  }, [setGhost, user.email]);
+  }, [ghost, setGhost, user.email]);
 
   return (
     <Sheet>
