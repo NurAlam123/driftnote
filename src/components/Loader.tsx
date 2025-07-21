@@ -4,9 +4,11 @@ import Logo from "./logo";
 const Loader = ({
   full,
   className,
+  loaderSize,
 }: {
   className?: string;
   full?: boolean;
+  loaderSize?: string;
 }) => {
   return (
     <div
@@ -18,7 +20,7 @@ const Loader = ({
     >
       <div className="h-full flex flex-col gap-4 justify-center items-center">
         <Logo />
-        <div className="loader w-4 mt-8"></div>
+        <div className={cn("loader w-4 mt-8", loaderSize)}></div>
       </div>
     </div>
   );

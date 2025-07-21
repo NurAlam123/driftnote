@@ -9,7 +9,7 @@ export async function getGhost({
 }: {
   username?: string;
   email?: string;
-}): Promise<{ success: boolean; data: Ghost | null }> {
+}): Promise<{ success: boolean; data?: Ghost; error?: string }> {
   let ghost;
 
   if (email) {
@@ -28,7 +28,7 @@ export async function getGhost({
     });
   }
 
-  if (!ghost) return { success: false, data: null };
+  if (!ghost) return { success: false, error: "Invalid username/password" };
 
   return {
     success: true,

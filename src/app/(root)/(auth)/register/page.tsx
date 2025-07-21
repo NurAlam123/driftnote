@@ -20,12 +20,15 @@ import { Eye, EyeOff, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { registerSchema, RegisterSchemaType } from "@/lib/zod/register-schema";
-import { redirect } from "next/navigation";
 import { createGhost } from "@/actions/createGhost";
 import { useAuthStore } from "@/store/auth-store";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const setGhost = useAuthStore((state) => state.setGhost);
 
   const form = useForm<RegisterSchemaType>({
@@ -38,25 +41,38 @@ export default function RegisterPage() {
   });
 
   async function onSubmit(values: RegisterSchemaType) {
+    setLoading(true);
     const formData = new FormData();
     formData.append("email", values.email);
     formData.append("password", values.password);
 
-    const { user, success } = await register(formData);
-    if (!success) redirect("/error");
-    if (!user?.email) redirect("/error");
-
-    const { success: ghostSuccess, data } = await createGhost({
-      email: user.email,
+    const { data, error } = await createGhost({
+      email: values.email as string,
       username: values.username,
     });
 
-    if (ghostSuccess) {
-      setGhost(data);
-      redirect("/");
-    } else {
-      redirect("/error");
+    if (error) {
+      toast.error(error);
+      setLoading(false);
+      return;
     }
+
+    if (!data) {
+      setLoading(false);
+      return;
+    }
+
+    const { error: registerError } = await register(formData);
+
+    if (registerError) {
+      toast.error(error);
+      setLoading(false);
+      return;
+    }
+
+    setGhost(data);
+    setLoading(false);
+    redirect("/");
   }
 
   return (
@@ -130,8 +146,18 @@ export default function RegisterPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                Register <LogInIcon />
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div>
+                      <div className="loader w-2" />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <span>Register</span> <LogInIcon />
+                  </>
+                )}
               </Button>
 
               <div>

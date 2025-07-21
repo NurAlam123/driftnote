@@ -21,10 +21,13 @@ import { Eye, EyeOff, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { getGhost } from "@/actions/getGhost";
-import { redirect } from "next/navigation";
+import { toast } from "sonner";
+import { useAuthStore } from "@/store/auth-store";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const setGhost = useAuthStore((state) => state.setGhost);
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -35,16 +38,30 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: LoginSchemaType) {
+    setLoading(true);
     const formData = new FormData();
     formData.append("password", values.password);
 
-    const { success, data } = await getGhost({ username: values.username });
-    if (!success) redirect("/error");
-    if (!data) redirect("/error");
+    const { data, error: ghostError } = await getGhost({
+      username: values.username,
+    });
+    if (!data || ghostError) {
+      toast.error(ghostError);
+      setLoading(false);
+      return;
+    }
 
     const email = data.email;
     formData.append("email", email);
-    await login(formData);
+    const { error } = await login(formData);
+    if (error) {
+      toast.error(error);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    setGhost(data);
   }
 
   return (
@@ -100,7 +117,17 @@ export default function LoginPage() {
               />
 
               <Button type="submit" className="w-full">
-                Login <LogInIcon />
+                {loading ? (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div>
+                      <div className="loader w-2" />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <span>Login</span> <LogInIcon />
+                  </>
+                )}
               </Button>
 
               <div>

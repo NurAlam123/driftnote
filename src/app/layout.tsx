@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { playwrite, PTSerif, roboto } from "@/fonts";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -27,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster richColors position="top-center" />
           <div className="max-w-3xl mx-auto">{children}</div>
         </ThemeProvider>
       </body>
