@@ -15,7 +15,6 @@ export async function register(formData: FormData) {
   const { error, data: userData } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log(error);
     let errorMessage;
 
     if (error.code === "user_already_exists") {
