@@ -1,4 +1,4 @@
-import Note from "@/components/Note";
+// import Note from "@/components/Note";
 import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 
@@ -41,7 +41,8 @@ export default async function NotePage({ params }: Props) {
 
   return (
     <>
-      <Note createdAt={createdAt} title={title} content={content} />
+      <p>HI</p>
+      {/* <Note createdAt={createdAt} title={title} content={content} /> */}
     </>
   );
 }

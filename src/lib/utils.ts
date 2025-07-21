@@ -23,6 +23,23 @@ export const checkAndGetTitle = (markdown: string) => {
   return lines[0].replace("#", "").trim();
 };
 
+export const checkAndGetTldr = (markdown: string, full: boolean = false) => {
+  const lines = markdown.split("\n").map((line) => line.trim());
+  let firstLine;
+  if (!full) firstLine = lines[0];
+  else firstLine = lines[2];
+  const modFirstLine = firstLine.toLowerCase().trim();
+  if (
+    !modFirstLine.startsWith(">") ||
+    modFirstLine.replace(">", "").trim() === "" ||
+    modFirstLine.replace(/tl;dr:/i, "").trim() === ""
+  ) {
+    return;
+  }
+
+  return firstLine.replace(">", "").trim();
+};
+
 export const getContent = (markdown: string) => {
   const lines = markdown.split("\n");
   const content = lines.slice(1);

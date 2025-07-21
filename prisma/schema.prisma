@@ -11,6 +11,7 @@ datasource db {
 model Trace {
   id        String   @id @default(cuid())
   title     String
+  tldr      String
   slug      String   @unique
   content   String
   ghost     Ghost    @relation(fields: [username], references: [username])

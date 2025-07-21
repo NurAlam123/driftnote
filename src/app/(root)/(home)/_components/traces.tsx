@@ -1,7 +1,7 @@
 "use client";
 
 import { fetcher } from "@/lib/utils";
-import { Post } from "@prisma/client";
+import { Trace } from "@prisma/client";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -24,11 +24,12 @@ const Traces = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver>(null);
+
   const [last, setLast] = useState<boolean>(true);
 
   const getKey = (
     pageIndex: number,
-    previousPageData: { count: number; notes: Post[] },
+    previousPageData: { count: number; notes: Trace[] },
   ) => {
     if (
       previousPageData &&

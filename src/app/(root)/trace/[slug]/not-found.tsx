@@ -19,7 +19,7 @@ export default function NotFound() {
           </Link>
           <Link
             className="font-bold flex bg-blue-400 text-background border border-background px-8 py-4 rounded-full relative hover:bg-background hover:border-blue-400 hover:text-blue-400 transition"
-            href={"/note/write"}
+            href={"/trace/create"}
           >
             Write Note
             <ArrowUpRight className="absolute right-4 top-3 size-4" />

@@ -20,7 +20,7 @@ const Navbar = async () => {
           <>
             <div>
               <Button asChild>
-                <Link href="/note/write">
+                <Link href="/trace/create">
                   <Pencil />
                   <span className="ms-0.5 hidden md:inline">Write</span>
                 </Link>

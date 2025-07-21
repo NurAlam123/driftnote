@@ -6,7 +6,17 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import slugify from "react-slugify";
 
-export const createPost = async (title: string, content: string) => {
+export const createTrace = async ({
+  title,
+  content,
+  tldr,
+  username,
+}: {
+  title: string;
+  tldr: string;
+  content: string;
+  username: string;
+}) => {
   if (!checkAndGetTitle(title) && content.trim() === "") return;
 
   const slug = await generateUniqueSlug(title);
@@ -17,11 +27,13 @@ export const createPost = async (title: string, content: string) => {
       title,
       content,
       slug,
+      tldr,
+      username,
     },
   });
 
-  revalidatePath(`/note/${slug}`);
-  redirect(`/note/${slug}`);
+  revalidatePath(`/trace/${slug}`);
+  redirect(`/trace/${slug}`);
 };
 
 export const generateUniqueSlug = async (title: string): Promise<string> => {
