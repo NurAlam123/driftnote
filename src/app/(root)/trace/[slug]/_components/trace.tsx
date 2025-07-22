@@ -1,11 +1,9 @@
 "use client";
-import { deleteTrace } from "@/actions/deleteTrace";
-import {
-  markTrace,
-  totalTraceMark,
-  traceMarkedByGhost,
-} from "@/actions/markTrace";
-import GhostIcon from "@/assets/ghost";
+
+import { redirect } from "next/navigation";
+import Markdown from "react-markdown";
+import { toast } from "sonner";
+
 import TimeFormat from "@/components/time-format";
 import {
   AlertDialog,
@@ -19,43 +17,25 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+
 import { fetcher } from "@/lib/utils";
+import { deleteTrace } from "@/actions/deleteTrace";
+import { totalTraceMark, traceMarkedByGhost } from "@/actions/markTrace";
+
 import { useAuthStore } from "@/store/auth-store";
-import { Ghost, Trace as TraceType } from "@prisma/client";
-import { AtSign, Trash, XCircleIcon } from "lucide-react";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import Markdown from "react-markdown";
-import { toast } from "sonner";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
+
+import { Ghost, Trace as TraceType } from "@prisma/client";
+
+import { AtSign, Trash, XCircleIcon } from "lucide-react";
+import TraceActions from "./trace-actions";
 
 const Trace = ({ trace }: { trace: TraceType }) => {
   const ghost = useAuthStore((state) => state.ghost);
 
   const [marked, setMarked] = useState<boolean>(false);
   const [totalMark, setTotalMark] = useState("00");
-
-  const onMarked = async () => {
-    if (!ghost) redirect("/login");
-
-    setMarked(!marked);
-
-    const res = await markTrace({
-      ghostID: ghost.id,
-      traceID: trace.id,
-      marked: !marked,
-    });
-
-    if (!res) {
-      setMarked(false);
-      return;
-    }
-
-    if (!res.success) {
-      setMarked(false);
-      return;
-    }
-  };
 
   const { data, isValidating } = useSWR(
     `/api/marks?traceID=${trace.id}`,
@@ -109,18 +89,18 @@ const Trace = ({ trace }: { trace: TraceType }) => {
       </div>
       <div className="relative mt-6 md:mt-12">
         <div className="my-2 flex justify-between items-center">
-          <div className="flex items-center gap-0.5">
-            <Button
-              variant="ghost"
-              className="hover:bg-background dark:hover:bg-background !p-0 !w-fit active:scale-95"
-              onClick={onMarked}
-            >
-              <GhostIcon marked={marked} className="size-7" />
-            </Button>
-            <p className="font-roboto text-sm font-medium">{totalMark}</p>
-          </div>
+          <TraceActions
+            mark={{
+              totalMark,
+              setTotalMark,
+              marked,
+              setMarked,
+            }}
+            trace={trace}
+            ghost={ghost || null}
+          />
           <div>
-            {ghost && <Trace.UserActions trace={trace} ghost={ghost} />}
+            {ghost && <Trace.GhostActions trace={trace} ghost={ghost} />}
           </div>
         </div>
         <div className="relative">
@@ -134,7 +114,8 @@ const Trace = ({ trace }: { trace: TraceType }) => {
   );
 };
 
-Trace.UserActions = function TraceUserActions({
+// Trace user actions
+Trace.GhostActions = function TraceGhostActions({
   trace,
   ghost,
 }: {
