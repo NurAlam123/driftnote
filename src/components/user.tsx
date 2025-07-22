@@ -24,7 +24,16 @@ import { Skeleton } from "./ui/skeleton";
 const User = ({ user }: { user: SupabaseUser }) => {
   const ghost = useAuthStore((state) => state.ghost);
   const setGhost = useAuthStore((state) => state.setGhost);
+  const removeGhost = useAuthStore((state) => state.removeGhost);
+
   const [loading, setLoading] = useState<boolean>(true);
+
+  const onLogout = async () => {
+    const res = await logout();
+    if (!res) return;
+    if (!res.success) return;
+    removeGhost();
+  };
 
   useEffect(() => {
     if (ghost) {
@@ -79,7 +88,7 @@ const User = ({ user }: { user: SupabaseUser }) => {
           <Button
             variant="destructive"
             className="flex items-center"
-            onClick={logout}
+            onClick={onLogout}
           >
             Logout <LogOutIcon className="size-4 ml-2" />
           </Button>

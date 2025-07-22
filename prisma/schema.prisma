@@ -14,21 +14,36 @@ model Trace {
   tldr      String
   slug      String   @unique
   content   String
-  ghost     Ghost    @relation(fields: [username], references: [username])
+  ghost     Ghost    @relation(fields: [username], references: [username], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   username  String   @default("ghost")
+  Mark      Mark[]
 
   @@map("trace")
 }
 
 model Ghost {
+  id        String   @id @default(cuid())
   email     String   @unique
   username  String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   traces    Trace[]
   verified  Boolean  @default(false)
+  Mark      Mark[]
 
   @@map("ghost")
+}
+
+model Mark {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  ghostID   String
+  traceID   String
+  ghost     Ghost    @relation(fields: [ghostID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  trace     Trace    @relation(fields: [traceID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@unique([ghostID, traceID]) // prevent duplicates
+  @@map("mark")
 }

@@ -119,12 +119,14 @@ const Traces = () => {
               </div>
             </div>
           </Suspense>
-          {!isFetching && data[0].count <= limit * size && (
-            <div className="flex flex-col justify-center items-center text-muted-foreground mt-4 text-xs">
-              <p>You have reached the end.</p>
-              <DotIcon />
-            </div>
-          )}
+          {!isFetching &&
+            data[0].count <= limit * size &&
+            data[0].notes.length > 0 && (
+              <div className="flex flex-col justify-center items-center text-muted-foreground mt-4 text-xs">
+                <p>You have reached the end.</p>
+                <DotIcon />
+              </div>
+            )}
         </>
       )}
     </>

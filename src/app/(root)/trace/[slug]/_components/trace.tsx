@@ -1,5 +1,11 @@
 "use client";
 import { deleteTrace } from "@/actions/deleteTrace";
+import {
+  markTrace,
+  totalTraceMark,
+  traceMarkedByGhost,
+} from "@/actions/markTrace";
+import GhostIcon from "@/assets/ghost";
 import TimeFormat from "@/components/time-format";
 import {
   AlertDialog,
@@ -13,27 +19,68 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { fetcher } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth-store";
-import { Trace as TraceType } from "@prisma/client";
+import { Ghost, Trace as TraceType } from "@prisma/client";
 import { AtSign, Trash, XCircleIcon } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { toast } from "sonner";
+import useSWR from "swr";
 
 const Trace = ({ trace }: { trace: TraceType }) => {
   const ghost = useAuthStore((state) => state.ghost);
 
-  const onDelete = async () => {
-    const res = await deleteTrace({ id: trace.id });
+  const [marked, setMarked] = useState<boolean>(false);
+  const [totalMark, setTotalMark] = useState("00");
 
-    if (!res?.success) {
-      toast.error(res?.error);
+  const onMarked = async () => {
+    if (!ghost) redirect("/login");
+
+    setMarked(!marked);
+
+    const res = await markTrace({
+      ghostID: ghost.id,
+      traceID: trace.id,
+      marked: !marked,
+    });
+
+    if (!res) {
+      setMarked(false);
       return;
     }
 
-    toast.success("Post deleted");
-    redirect("/");
+    if (!res.success) {
+      setMarked(false);
+      return;
+    }
   };
+
+  const { data, isValidating } = useSWR(
+    `/api/marks?traceID=${trace.id}`,
+    fetcher,
+    {
+      refreshInterval: 120 * 1000,
+    },
+  );
+
+  useEffect(() => {
+    if (data) {
+      if (data.count !== "00") {
+        setTotalMark(data.count);
+      }
+    }
+  }, [data, isValidating]);
+
+  useEffect(() => {
+    if (ghost)
+      traceMarkedByGhost({ traceID: trace.id, ghostID: ghost.id }).then((res) =>
+        setMarked(res),
+      );
+
+    totalTraceMark({ traceID: trace.id }).then((count) => setTotalMark(count));
+  }, [trace.id, marked, ghost]);
 
   return (
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 mb-12">
@@ -61,41 +108,19 @@ const Trace = ({ trace }: { trace: TraceType }) => {
         </article>
       </div>
       <div className="relative mt-6 md:mt-12">
-        <div className="my-2">
-          <div className="flex w-full justify-end gap-2">
-            {/* <Button> */}
-            {/*   <Pen /> */}
-            {/* </Button> */}
-            {trace.username === ghost?.username && (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive">
-                    <Trash />
-                  </Button>
-                </AlertDialogTrigger>
-
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      the trace.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      <XCircleIcon /> Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={onDelete}>
-                      <Trash /> Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
+        <div className="my-2 flex justify-between items-center">
+          <div className="flex items-center gap-0.5">
+            <Button
+              variant="ghost"
+              className="hover:bg-background dark:hover:bg-background !p-0 !w-fit active:scale-95"
+              onClick={onMarked}
+            >
+              <GhostIcon marked={marked} className="size-7" />
+            </Button>
+            <p className="font-roboto text-sm font-medium">{totalMark}</p>
+          </div>
+          <div>
+            {ghost && <Trace.UserActions trace={trace} ghost={ghost} />}
           </div>
         </div>
         <div className="relative">
@@ -106,6 +131,62 @@ const Trace = ({ trace }: { trace: TraceType }) => {
         </div>
       </div>
     </section>
+  );
+};
+
+Trace.UserActions = function TraceUserActions({
+  trace,
+  ghost,
+}: {
+  trace: TraceType;
+  ghost: Ghost;
+}) {
+  const onDelete = async () => {
+    const res = await deleteTrace({ id: trace.id });
+
+    if (!res?.success) {
+      toast.error(res?.error);
+      return;
+    }
+
+    toast.success("Post deleted");
+    redirect("/");
+  };
+
+  return (
+    <div className="flex w-full gap-2">
+      {/* <Button> */}
+      {/*   <Pen /> */}
+      {/* </Button> */}
+      {trace.username === ghost?.username && (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive">
+              <Trash />
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the
+                trace.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <AlertDialogFooter>
+              <AlertDialogCancel>
+                <XCircleIcon /> Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={onDelete}>
+                <Trash /> Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+    </div>
   );
 };
 

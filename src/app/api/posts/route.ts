@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   const query = url.searchParams;
   const limit = Number(query.get("limit")) || 0;
 
-  const notes = await prisma.trace.findMany({
+  const traces = await prisma.trace.findMany({
     orderBy: {
       createdAt: "desc",
     },
@@ -17,7 +17,7 @@ export async function GET(req: Request) {
 
   const data = JSON.stringify({
     count,
-    notes,
+    notes: traces,
   });
 
   return new Response(data);

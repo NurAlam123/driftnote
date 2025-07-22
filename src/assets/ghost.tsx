@@ -1,0 +1,53 @@
+import { cn } from "@/lib/utils";
+
+const GhostIcon = ({
+  marked = false,
+  className,
+}: {
+  marked?: boolean;
+  className?: string;
+}) => {
+  return (
+    <svg
+      viewBox="0 0 1024 1024"
+      style={{
+        clipRule: "evenodd",
+        fillRule: "evenodd",
+        shapeRendering: "geometricPrecision",
+        textRendering: "geometricPrecision",
+      }}
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("*:transition-colors duration-150", className)}
+    >
+      <path
+        style={{ opacity: 1 }}
+        className={cn(
+          "fill-neutral-600 dark:fill-neutral-50",
+          marked && "fill-neutral-600",
+        )}
+        d="M502.5 226.5q119.07.877 165.5 110a206.7 206.7 0 0 1 10 41q5.698 55.981 11 112 4.85 35.1 11 70 9.796 43.887 32 83 17.895 38.917-11.5 69.5-20.065 15.017-45 11a164 164 0 0 1-21-6q-19.677-12.792-43-12a70.3 70.3 0 0 0-20 10 281 281 0 0 1-38 31q-51.285 28.479-97-8a423 423 0 0 1-26-23 69.2 69.2 0 0 0-17-9q-9-1-18 0a1164 1164 0 0 0-43 16q-43.52 10.17-65.5-28.5-9.092-24.645 1-49a739 739 0 0 0 23-46 740 740 0 0 0 21-98 27894 27894 0 0 1 14-130q19.136-97.633 111.5-134.5 22.161-7.424 45-9.5"
+        transform="translate(-363.784 -332.509)scale(1.71476)"
+      />
+      <path
+        style={{ opacity: 1 }}
+        className={cn(
+          "fill-neutral-50 dark:fill-neutral-600",
+          marked && "fill-neutral-600 dark:fill-neutral-50",
+        )}
+        d="M503.5 257.5q106.752 1.548 138.5 103a223 223 0 0 1 5 25 2217 2217 0 0 0 16 149 480.4 480.4 0 0 0 18 73l13 32a167.5 167.5 0 0 1 13 27q.705 29.28-28.5 24.5a474 474 0 0 1-27-11q-34.559-13.975-68 2a1835 1835 0 0 1-45 36q-24.267 14.985-50 3a180 180 0 0 1-15-10 315.4 315.4 0 0 0-41-32q-24.48-9.174-50-3a188.6 188.6 0 0 0-32 13q-14.317 7.458-28-1-10.653-9.46-7.5-23.5 31.077-55.218 42-118a1429 1429 0 0 0 17-150q3.977-50.964 35-91 38.069-42.159 94.5-48"
+        transform="translate(-363.784 -332.509)scale(1.71476)"
+      />
+      <path
+        style={{ opacity: 1 }}
+        className={cn(
+          "fill-neutral-600 dark:fill-neutral-50",
+          marked && "fill-neutral-50 dark:fill-neutral-600",
+        )}
+        d="M450.5 357.5q30.027 1.269 35.5 31 3.31 22.063-11.5 38.5-28.089 18.807-46.5-9.5-12.841-30.034 9.5-53.5 6.235-4.118 13-6.5m113 0q22.389.567 31.5 21 10.692 30.081-12.5 51.5-32.768 13.905-45.5-19.5-7.798-28.079 13.5-47.5 6.325-3.677 13-5.5"
+        transform="translate(-363.784 -332.509)scale(1.71476)"
+      />
+    </svg>
+  );
+};
+
+export default GhostIcon;
