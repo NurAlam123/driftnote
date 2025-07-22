@@ -78,7 +78,7 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex justify-center items-center h-svh mx-2 md:mx-0">
+    <div className="flex justify-center items-center h-screen mx-2 md:mx-0">
       <div className="max-w-sm w-full border px-6 py-12 rounded-md shadow-md">
         <div className="flex justify-center my-8">
           <Logo />

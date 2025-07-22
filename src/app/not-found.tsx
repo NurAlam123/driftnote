@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="h-svh flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center">
       <div>
         <div className="flex gap-2 items-center">
           <Ghost className="size-32" />
