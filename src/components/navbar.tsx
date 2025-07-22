@@ -3,8 +3,9 @@ import { ThemeToggle } from "@/components/theme/theme-toggler";
 import { Button } from "@/components/ui/button";
 import User from "@/components/user";
 import { createClient } from "@/lib/supabase/server";
-import { LogInIcon, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
+import AuthLinkButton from "./auth-link-button";
 
 const Navbar = async () => {
   const supabase = await createClient();
@@ -31,11 +32,7 @@ const Navbar = async () => {
             </div>
           </>
         ) : (
-          <Button asChild>
-            <Link href="/login">
-              Login <LogInIcon />
-            </Link>
-          </Button>
+          <AuthLinkButton />
         )}
       </div>
     </nav>

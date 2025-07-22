@@ -20,19 +20,23 @@ import { logout } from "@/actions/logout";
 import { useAuthStore } from "@/store/auth-store";
 import { getGhost } from "@/actions/getGhost";
 import { Skeleton } from "./ui/skeleton";
+import { usePathname } from "next/navigation";
 
 const User = ({ user }: { user: SupabaseUser }) => {
   const ghost = useAuthStore((state) => state.ghost);
   const setGhost = useAuthStore((state) => state.setGhost);
   const removeGhost = useAuthStore((state) => state.removeGhost);
 
+  const pathname = usePathname();
+
   const [loading, setLoading] = useState<boolean>(true);
 
   const onLogout = async () => {
-    const res = await logout();
+    const res = await logout(pathname);
     if (!res) return;
     if (!res.success) return;
     removeGhost();
+    window.location.reload();
   };
 
   useEffect(() => {

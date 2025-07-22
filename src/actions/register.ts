@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 
-export async function register(formData: FormData) {
+export async function register(formData: FormData, redirectURL: string) {
   const supabase = await createClient();
 
   const data = {
@@ -29,7 +29,7 @@ export async function register(formData: FormData) {
     };
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath(redirectURL, "page");
   return {
     success: true,
     user: userData.user,

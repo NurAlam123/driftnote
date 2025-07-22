@@ -19,15 +19,19 @@ import { Input } from "@/components/ui/input";
 import { loginSchema, LoginSchemaType } from "@/lib/zod/login-schema";
 import { Eye, EyeOff, LogInIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getGhost } from "@/actions/getGhost";
 import { toast } from "sonner";
 import { useAuthStore } from "@/store/auth-store";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [redirectURL, setRedirectURL] = useState<string>("/");
+
   const setGhost = useAuthStore((state) => state.setGhost);
+  const setG = useAuthStore((state) => state.setG);
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -53,7 +57,7 @@ export default function LoginPage() {
 
     const email = data.email;
     formData.append("email", email);
-    const { error } = await login(formData);
+    const { error } = await login(formData, redirectURL);
     if (error) {
       toast.error(error);
       setLoading(false);
@@ -62,7 +66,16 @@ export default function LoginPage() {
 
     setLoading(false);
     setGhost(data);
+    redirect(redirectURL);
   }
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const query = url.searchParams;
+
+    const redirectURL = query.get("redirect") || "/";
+    setRedirectURL(redirectURL);
+  }, []);
 
   return (
     <div className="flex justify-center items-center h-svh mx-2 md:mx-0">
@@ -136,7 +149,7 @@ export default function LoginPage() {
                     Don&apos;t have an account?{" "}
                   </span>
                   <Link
-                    href="/register"
+                    href={redirectURL}
                     className="underline hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors duration-150"
                   >
                     Register

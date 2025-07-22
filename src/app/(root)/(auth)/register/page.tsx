@@ -29,6 +29,9 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const url = new URL(window.location.href);
+  const query = url.searchParams;
+
   const setGhost = useAuthStore((state) => state.setGhost);
 
   const form = useForm<RegisterSchemaType>({
@@ -62,7 +65,9 @@ export default function RegisterPage() {
       return;
     }
 
-    const { error: registerError } = await register(formData);
+    const redirectURL = query.get("redirect") || "/";
+
+    const { error: registerError } = await register(formData, redirectURL);
 
     if (registerError) {
       toast.error(error);
@@ -72,7 +77,7 @@ export default function RegisterPage() {
 
     setGhost(data);
     setLoading(false);
-    redirect("/");
+    redirect(redirectURL);
   }
 
   return (

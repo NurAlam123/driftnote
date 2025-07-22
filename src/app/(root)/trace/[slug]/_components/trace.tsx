@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 
 import { fetcher } from "@/lib/utils";
 import { deleteTrace } from "@/actions/deleteTrace";
-import { totalTraceMark, traceMarkedByGhost } from "@/actions/markTrace";
+import { traceMarkedByGhost } from "@/actions/markTrace";
 
 import { useAuthStore } from "@/store/auth-store";
 import useSWR from "swr";
@@ -58,9 +58,7 @@ const Trace = ({ trace }: { trace: TraceType }) => {
       traceMarkedByGhost({ traceID: trace.id, ghostID: ghost.id }).then((res) =>
         setMarked(res),
       );
-
-    totalTraceMark({ traceID: trace.id }).then((count) => setTotalMark(count));
-  }, [trace.id, marked, ghost]);
+  }, [trace.id, ghost]);
 
   return (
     <section className="font-pt-serif py-6 px-4 md:py-12 md:px-6 mb-12">

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 
-export async function logout() {
+export async function logout(revalidateURL: string) {
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signOut();
@@ -14,7 +14,7 @@ export async function logout() {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath(revalidateURL, "page");
   return {
     success: true,
   };
