@@ -15,6 +15,7 @@ import Link from "next/link";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
 import {
   Tooltip,
   TooltipContent,
@@ -22,12 +23,12 @@ import {
 } from "@/components/ui/tooltip";
 import TimeFormat from "@/components/time-format";
 
-const TraceCard = ({ notes }: { notes: Trace[] }) => {
+const TraceCard = ({ traces }: { traces: Trace[] }) => {
   dayjs.extend(relativeTime);
 
   return (
     <div>
-      {notes.map((trace) => (
+      {traces.map((trace) => (
         <Card key={trace.id} className="mt-2 shadow-sm">
           <CardContent className="!px-0">
             <CardHeader>

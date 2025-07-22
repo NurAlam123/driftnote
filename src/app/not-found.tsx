@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center px-4">
       <div>
         <div className="flex gap-2 items-center">
           <Ghost className="size-32" />
@@ -16,7 +16,7 @@ export default function NotFound() {
               <span className="text-xl"> Not Found</span>
             </div>
             <Button variant="outline" className="mt-2" asChild>
-              <Link href="/">Go Back</Link>
+              <Link href="/">Go Home</Link>
             </Button>
           </div>
         </div>

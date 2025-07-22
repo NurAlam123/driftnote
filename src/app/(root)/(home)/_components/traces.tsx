@@ -98,7 +98,7 @@ const Traces = () => {
             <div>
               <div ref={containerRef}>
                 {data?.map((noteData, i) => (
-                  <TraceCard key={i} notes={noteData.notes} />
+                  <TraceCard key={i} traces={noteData.notes} />
                 ))}
 
                 {last && data[0].count > limit && (

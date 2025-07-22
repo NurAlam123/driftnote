@@ -1,35 +1,21 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import Markdown from "react-markdown";
-import { toast } from "sonner";
 
 import TimeFormat from "@/components/time-format";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 
 import { fetcher } from "@/lib/utils";
-import { deleteTrace } from "@/actions/deleteTrace";
 import { traceMarkedByGhost } from "@/actions/markTrace";
 
 import { useAuthStore } from "@/store/auth-store";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 
-import { Ghost, Trace as TraceType } from "@prisma/client";
+import { Trace as TraceType } from "@prisma/client";
 
-import { AtSign, Trash, XCircleIcon } from "lucide-react";
+import { AtSign } from "lucide-react";
 import TraceActions from "./trace-actions";
+import TraceCardAction from "@/components/trace-card-action";
 
 const Trace = ({ trace }: { trace: TraceType }) => {
   const ghost = useAuthStore((state) => state.ghost);
@@ -97,9 +83,7 @@ const Trace = ({ trace }: { trace: TraceType }) => {
             trace={trace}
             ghost={ghost || null}
           />
-          <div>
-            {ghost && <Trace.GhostActions trace={trace} ghost={ghost} />}
-          </div>
+          <div>{ghost && <TraceCardAction trace={trace} ghost={ghost} />}</div>
         </div>
         <div className="relative">
           <div className="absolute inset-0 border-t-4 [border-style:dotted]" />
@@ -109,63 +93,6 @@ const Trace = ({ trace }: { trace: TraceType }) => {
         </div>
       </div>
     </section>
-  );
-};
-
-// Trace user actions
-Trace.GhostActions = function TraceGhostActions({
-  trace,
-  ghost,
-}: {
-  trace: TraceType;
-  ghost: Ghost;
-}) {
-  const onDelete = async () => {
-    const res = await deleteTrace({ id: trace.id });
-
-    if (!res?.success) {
-      toast.error(res?.error);
-      return;
-    }
-
-    toast.success("Post deleted");
-    redirect("/");
-  };
-
-  return (
-    <div className="flex w-full gap-2">
-      {/* <Button> */}
-      {/*   <Pen /> */}
-      {/* </Button> */}
-      {trace.username === ghost?.username && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">
-              <Trash />
-            </Button>
-          </AlertDialogTrigger>
-
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the
-                trace.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-
-            <AlertDialogFooter>
-              <AlertDialogCancel>
-                <XCircleIcon /> Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={onDelete}>
-                <Trash /> Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-    </div>
   );
 };
 

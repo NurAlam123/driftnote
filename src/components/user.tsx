@@ -91,14 +91,11 @@ const User = ({ user }: { user: SupabaseUser }) => {
           </div>
         </div>
         <div className="space-y-2">
-          <Button className="w-full" variant="outline">
-            <Link
-              href="/profile"
-              className="flex items-center justify-center gap-4"
-            >
+          <Link href={`/ghost/${ghost?.username}`} className="block">
+            <Button className="w-full" variant="outline">
               Profile <GhostIcon />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button
             variant="destructive"
             onClick={onLogout}

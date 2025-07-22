@@ -31,7 +31,6 @@ export default function LoginPage() {
   const [redirectURL, setRedirectURL] = useState<string>("/");
 
   const setGhost = useAuthStore((state) => state.setGhost);
-  const setG = useAuthStore((state) => state.setG);
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -149,7 +148,11 @@ export default function LoginPage() {
                     Don&apos;t have an account?{" "}
                   </span>
                   <Link
-                    href={redirectURL}
+                    href={
+                      redirectURL
+                        ? `/register?redirect=${redirectURL}`
+                        : "/register"
+                    }
                     className="underline hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors duration-150"
                   >
                     Register

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, LogInIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registerSchema, RegisterSchemaType } from "@/lib/zod/register-schema";
 import { createGhost } from "@/actions/createGhost";
 import { useAuthStore } from "@/store/auth-store";
@@ -28,9 +28,7 @@ import { redirect } from "next/navigation";
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const url = new URL(window.location.href);
-  const query = url.searchParams;
+  const [redirectURL, setRedirectURL] = useState<string>("/");
 
   const setGhost = useAuthStore((state) => state.setGhost);
 
@@ -65,8 +63,6 @@ export default function RegisterPage() {
       return;
     }
 
-    const redirectURL = query.get("redirect") || "/";
-
     const { error: registerError } = await register(formData, redirectURL);
 
     if (registerError) {
@@ -79,6 +75,14 @@ export default function RegisterPage() {
     setLoading(false);
     redirect(redirectURL);
   }
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const query = url.searchParams;
+
+    const redirectURL = query.get("redirect") || "/";
+    setRedirectURL(redirectURL);
+  }, []);
 
   return (
     <div className="flex justify-center items-center h-screen mx-2 md:mx-0">
@@ -171,7 +175,9 @@ export default function RegisterPage() {
                     Already have an account?{" "}
                   </span>
                   <Link
-                    href="/login"
+                    href={
+                      redirectURL ? `/login?redirect=${redirectURL}` : "/login"
+                    }
                     className="underline hover:text-neutral-600 dark:hover:text-neutral-400 transition-colors duration-150"
                   >
                     Login
